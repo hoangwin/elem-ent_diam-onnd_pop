@@ -1,0 +1,40 @@
+<phone:PhoneApplicationPage 
+    x:Class="CandyPopHD.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}" Orientation="Portrait" SupportedOrientations="PortraitOrLandscape" BackKeyPress="PhoneApplicationPage_BackKeyPress" OrientationChanged="PhoneApplicationPage_OrientationChanged"
+    xmlns:mobfox="clr-namespace:MobFox.Ads;assembly=MobFox.Ads">
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <DrawingSurfaceBackgroundGrid x:Name="DrawingSurfaceBackground"   Loaded="DrawingSurfaceBackground_Loaded">
+        <!--Can chu Y den Nokia va khong co Nokia-->
+        <!--
+        <ad:InneractiveAd 
+        xmlns:ad="clr-namespace:Inneractive.Nokia.Ad;assembly=Inneractive.Ad"
+        AppID="LavaGame_CandyPopHD_WP"
+        AdType="IaAdType_Banner"
+        ReloadTime="60"
+        Grid.Row="5"
+        AdAlignment ="BOTTOM_CENTER" 
+       
+        Name="InneractiveXamlAd"/>
+        -->
+        <mobfox:AdControl 
+                Name="mobFoxadControl"                
+                PublisherID="921bb609c6eed77679352276b51a9cd9"
+                NoAd="noAdsMobfox"
+                VerticalAlignment="Bottom"/>
+    </DrawingSurfaceBackgroundGrid>
+
+   
+    <!--
+   
+    -->
+</phone:PhoneApplicationPage>

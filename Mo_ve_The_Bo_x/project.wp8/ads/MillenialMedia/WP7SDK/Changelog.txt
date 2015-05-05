@@ -1,0 +1,36 @@
+Change Log 
+-------------------------------
+
+Version 4.5.0, 5/3/2012
+Totally new interface
+Added global event notification system with more informative events
+Complete support for interactive videos
+Added Interstitial precaching capabilities
+Fetch, check, and display methods now allow better control over Interstitial ads
+Support for Conversion tracking across multiple goal ids
+Improved location APIs to improve advertisement relevancy
+Updated accelerometer support
+Bug fixes
+
+Version 3.6.0, 7/13/2011
+Added support for telephone, sms, and map links
+Added work around for a Windows Phone 7 bug that steals input focus when content is loaded into the MMAdView
+Added indeterminate loading screen when opening up overlays
+Support for the back button when browsing in an overlay
+Added support for detecting and handling when ad images fail to load
+Bug fixes
+
+Version 3.5.1, 1/18/2011
+Bug fix with passing click URL
+
+Version 3.5.0, 1/17/2011
+Added support for web, video, and marketplace interstitials
+Added support for click to video and marketplace from overlay
+Bug fixes
+
+Version 0.5.2, 11/18/2010
+Added method to stop refresh timer when navigating away from page.
+
+Version 0.5, 10/20/2010
+Beta release
+Supports click-to-web, click-to-overlay, click-to-video, and click-to-marketplace

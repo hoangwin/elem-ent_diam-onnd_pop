@@ -1,0 +1,17 @@
+d:\project_android\pikachu\Gameloft_AI_Template_2013_V106\serveroffline\Can_dy_Ga_me\project.wp8\ads\MillenialMedia\WP7SDK\MMSampleApp\MMSampleApp\Bin\Debug\ApplicationIcon.png
+d:\project_android\pikachu\Gameloft_AI_Template_2013_V106\serveroffline\Can_dy_Ga_me\project.wp8\ads\MillenialMedia\WP7SDK\MMSampleApp\MMSampleApp\Bin\Debug\Background.png
+d:\project_android\pikachu\Gameloft_AI_Template_2013_V106\serveroffline\Can_dy_Ga_me\project.wp8\ads\MillenialMedia\WP7SDK\MMSampleApp\MMSampleApp\Bin\Debug\MMSampleApp.dll
+d:\project_android\pikachu\Gameloft_AI_Template_2013_V106\serveroffline\Can_dy_Ga_me\project.wp8\ads\MillenialMedia\WP7SDK\MMSampleApp\MMSampleApp\Bin\Debug\MMSampleApp.pdb
+d:\project_android\pikachu\Gameloft_AI_Template_2013_V106\serveroffline\Can_dy_Ga_me\project.wp8\ads\MillenialMedia\WP7SDK\MMSampleApp\MMSampleApp\Bin\Debug\AppManifest.xaml
+d:\project_android\pikachu\Gameloft_AI_Template_2013_V106\serveroffline\Can_dy_Ga_me\project.wp8\ads\MillenialMedia\WP7SDK\MMSampleApp\MMSampleApp\Bin\Debug\MMSampleApp.xap
+d:\project_android\pikachu\Gameloft_AI_Template_2013_V106\serveroffline\Can_dy_Ga_me\project.wp8\ads\MillenialMedia\WP7SDK\MMSampleApp\MMSampleApp\Bin\Debug\Microsoft.Phone.Controls.dll
+d:\project_android\pikachu\Gameloft_AI_Template_2013_V106\serveroffline\Can_dy_Ga_me\project.wp8\ads\MillenialMedia\WP7SDK\MMSampleApp\MMSampleApp\Bin\Debug\MillennialMedia.WP7.SDK.dll
+d:\project_android\pikachu\Gameloft_AI_Template_2013_V106\serveroffline\Can_dy_Ga_me\project.wp8\ads\MillenialMedia\WP7SDK\MMSampleApp\MMSampleApp\Bin\Debug\Microsoft.Phone.Controls.xml
+d:\project_android\pikachu\Gameloft_AI_Template_2013_V106\serveroffline\Can_dy_Ga_me\project.wp8\ads\MillenialMedia\WP7SDK\MMSampleApp\MMSampleApp\obj\Debug\MMSampleApp.csprojResolveAssemblyReference.cache
+d:\project_android\pikachu\Gameloft_AI_Template_2013_V106\serveroffline\Can_dy_Ga_me\project.wp8\ads\MillenialMedia\WP7SDK\MMSampleApp\MMSampleApp\obj\Debug\App.g.cs
+d:\project_android\pikachu\Gameloft_AI_Template_2013_V106\serveroffline\Can_dy_Ga_me\project.wp8\ads\MillenialMedia\WP7SDK\MMSampleApp\MMSampleApp\obj\Debug\MainPage.g.cs
+d:\project_android\pikachu\Gameloft_AI_Template_2013_V106\serveroffline\Can_dy_Ga_me\project.wp8\ads\MillenialMedia\WP7SDK\MMSampleApp\MMSampleApp\obj\Debug\MapPage.g.cs
+d:\project_android\pikachu\Gameloft_AI_Template_2013_V106\serveroffline\Can_dy_Ga_me\project.wp8\ads\MillenialMedia\WP7SDK\MMSampleApp\MMSampleApp\obj\Debug\MMSampleApp.g.resources
+d:\project_android\pikachu\Gameloft_AI_Template_2013_V106\serveroffline\Can_dy_Ga_me\project.wp8\ads\MillenialMedia\WP7SDK\MMSampleApp\MMSampleApp\obj\Debug\MMSampleApp.dll
+d:\project_android\pikachu\Gameloft_AI_Template_2013_V106\serveroffline\Can_dy_Ga_me\project.wp8\ads\MillenialMedia\WP7SDK\MMSampleApp\MMSampleApp\obj\Debug\MMSampleApp.pdb
+d:\project_android\pikachu\Gameloft_AI_Template_2013_V106\serveroffline\Can_dy_Ga_me\project.wp8\ads\MillenialMedia\WP7SDK\MMSampleApp\MMSampleApp\obj\Debug\XapCacheFile.xml

@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WheresMySpot", "WheresMySpot\WheresMySpot.csproj", "{0D08C445-E0FE-4B00-BB6D-28E2DB9A0D8E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|ARM = Debug|ARM
+		Master|ARM = Master|ARM
+		Release|ARM = Release|ARM
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0D08C445-E0FE-4B00-BB6D-28E2DB9A0D8E}.Debug|ARM.ActiveCfg = Debug|ARM
+		{0D08C445-E0FE-4B00-BB6D-28E2DB9A0D8E}.Debug|ARM.Build.0 = Debug|ARM
+		{0D08C445-E0FE-4B00-BB6D-28E2DB9A0D8E}.Debug|ARM.Deploy.0 = Debug|ARM
+		{0D08C445-E0FE-4B00-BB6D-28E2DB9A0D8E}.Master|ARM.ActiveCfg = Master|ARM
+		{0D08C445-E0FE-4B00-BB6D-28E2DB9A0D8E}.Master|ARM.Build.0 = Master|ARM
+		{0D08C445-E0FE-4B00-BB6D-28E2DB9A0D8E}.Master|ARM.Deploy.0 = Master|ARM
+		{0D08C445-E0FE-4B00-BB6D-28E2DB9A0D8E}.Release|ARM.ActiveCfg = Release|ARM
+		{0D08C445-E0FE-4B00-BB6D-28E2DB9A0D8E}.Release|ARM.Build.0 = Release|ARM
+		{0D08C445-E0FE-4B00-BB6D-28E2DB9A0D8E}.Release|ARM.Deploy.0 = Release|ARM
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,58 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010 Express for Windows Phone
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MMHybridSampleApp", "MMHybridSampleApp\MMHybridSampleApp\MMHybridSampleApp.csproj", "{53263962-6F7F-4EE6-A4D2-B9F33B91AA0A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MMHybridSampleAppLib", "MMHybridSampleApp\MMHybridSampleAppLib\MMHybridSampleAppLib.csproj", "{3BF5C901-ACFB-4880-967D-55A9C3AD9D35}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MMHybridSampleAppLibContent", "MMHybridSampleApp\MMHybridSampleAppLibContent\MMHybridSampleAppLibContent.contentproj", "{310F5573-3F4C-4EE9-9091-81AE53F45289}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Debug|Windows Phone = Debug|Windows Phone
+		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
+		Release|Windows Phone = Release|Windows Phone
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{53263962-6F7F-4EE6-A4D2-B9F33B91AA0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53263962-6F7F-4EE6-A4D2-B9F33B91AA0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53263962-6F7F-4EE6-A4D2-B9F33B91AA0A}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{53263962-6F7F-4EE6-A4D2-B9F33B91AA0A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{53263962-6F7F-4EE6-A4D2-B9F33B91AA0A}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{53263962-6F7F-4EE6-A4D2-B9F33B91AA0A}.Debug|Mixed Platforms.Deploy.0 = Debug|Any CPU
+		{53263962-6F7F-4EE6-A4D2-B9F33B91AA0A}.Debug|Windows Phone.ActiveCfg = Debug|Any CPU
+		{53263962-6F7F-4EE6-A4D2-B9F33B91AA0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53263962-6F7F-4EE6-A4D2-B9F33B91AA0A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53263962-6F7F-4EE6-A4D2-B9F33B91AA0A}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{53263962-6F7F-4EE6-A4D2-B9F33B91AA0A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{53263962-6F7F-4EE6-A4D2-B9F33B91AA0A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{53263962-6F7F-4EE6-A4D2-B9F33B91AA0A}.Release|Mixed Platforms.Deploy.0 = Release|Any CPU
+		{53263962-6F7F-4EE6-A4D2-B9F33B91AA0A}.Release|Windows Phone.ActiveCfg = Release|Any CPU
+		{3BF5C901-ACFB-4880-967D-55A9C3AD9D35}.Debug|Any CPU.ActiveCfg = Debug|Windows Phone
+		{3BF5C901-ACFB-4880-967D-55A9C3AD9D35}.Debug|Mixed Platforms.ActiveCfg = Debug|Windows Phone
+		{3BF5C901-ACFB-4880-967D-55A9C3AD9D35}.Debug|Mixed Platforms.Build.0 = Debug|Windows Phone
+		{3BF5C901-ACFB-4880-967D-55A9C3AD9D35}.Debug|Windows Phone.ActiveCfg = Debug|Windows Phone
+		{3BF5C901-ACFB-4880-967D-55A9C3AD9D35}.Debug|Windows Phone.Build.0 = Debug|Windows Phone
+		{3BF5C901-ACFB-4880-967D-55A9C3AD9D35}.Release|Any CPU.ActiveCfg = Release|Windows Phone
+		{3BF5C901-ACFB-4880-967D-55A9C3AD9D35}.Release|Mixed Platforms.ActiveCfg = Release|Windows Phone
+		{3BF5C901-ACFB-4880-967D-55A9C3AD9D35}.Release|Mixed Platforms.Build.0 = Release|Windows Phone
+		{3BF5C901-ACFB-4880-967D-55A9C3AD9D35}.Release|Windows Phone.ActiveCfg = Release|Windows Phone
+		{3BF5C901-ACFB-4880-967D-55A9C3AD9D35}.Release|Windows Phone.Build.0 = Release|Windows Phone
+		{310F5573-3F4C-4EE9-9091-81AE53F45289}.Debug|Any CPU.ActiveCfg = Debug|Windows Phone
+		{310F5573-3F4C-4EE9-9091-81AE53F45289}.Debug|Mixed Platforms.ActiveCfg = Debug|Windows Phone
+		{310F5573-3F4C-4EE9-9091-81AE53F45289}.Debug|Windows Phone.ActiveCfg = Debug|Windows Phone
+		{310F5573-3F4C-4EE9-9091-81AE53F45289}.Release|Any CPU.ActiveCfg = Release|Windows Phone
+		{310F5573-3F4C-4EE9-9091-81AE53F45289}.Release|Mixed Platforms.ActiveCfg = Release|Windows Phone
+		{310F5573-3F4C-4EE9-9091-81AE53F45289}.Release|Windows Phone.ActiveCfg = Release|Windows Phone
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
+EndGlobal

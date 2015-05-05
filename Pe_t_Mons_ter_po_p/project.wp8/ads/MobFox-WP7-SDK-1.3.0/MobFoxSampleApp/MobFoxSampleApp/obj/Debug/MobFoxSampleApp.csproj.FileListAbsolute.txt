@@ -1,0 +1,14 @@
+d:\project_android\pikachu\Gameloft_AI_Template_2013_V106\serveroffline\Can_dy_Ga_me\project.wp8\ads\MobFox-WP7-SDK-1.3.0\MobFoxSampleApp\MobFoxSampleApp\Bin\Debug\ApplicationIcon.png
+d:\project_android\pikachu\Gameloft_AI_Template_2013_V106\serveroffline\Can_dy_Ga_me\project.wp8\ads\MobFox-WP7-SDK-1.3.0\MobFoxSampleApp\MobFoxSampleApp\Bin\Debug\Background.png
+d:\project_android\pikachu\Gameloft_AI_Template_2013_V106\serveroffline\Can_dy_Ga_me\project.wp8\ads\MobFox-WP7-SDK-1.3.0\MobFoxSampleApp\MobFoxSampleApp\Bin\Debug\MobFoxSampleApp.dll
+d:\project_android\pikachu\Gameloft_AI_Template_2013_V106\serveroffline\Can_dy_Ga_me\project.wp8\ads\MobFox-WP7-SDK-1.3.0\MobFoxSampleApp\MobFoxSampleApp\Bin\Debug\MobFoxSampleApp.pdb
+d:\project_android\pikachu\Gameloft_AI_Template_2013_V106\serveroffline\Can_dy_Ga_me\project.wp8\ads\MobFox-WP7-SDK-1.3.0\MobFoxSampleApp\MobFoxSampleApp\Bin\Debug\AppManifest.xaml
+d:\project_android\pikachu\Gameloft_AI_Template_2013_V106\serveroffline\Can_dy_Ga_me\project.wp8\ads\MobFox-WP7-SDK-1.3.0\MobFoxSampleApp\MobFoxSampleApp\Bin\Debug\MobFoxSampleApp.xap
+d:\project_android\pikachu\Gameloft_AI_Template_2013_V106\serveroffline\Can_dy_Ga_me\project.wp8\ads\MobFox-WP7-SDK-1.3.0\MobFoxSampleApp\MobFoxSampleApp\Bin\Debug\MobFox.Ads.dll
+d:\project_android\pikachu\Gameloft_AI_Template_2013_V106\serveroffline\Can_dy_Ga_me\project.wp8\ads\MobFox-WP7-SDK-1.3.0\MobFoxSampleApp\MobFoxSampleApp\obj\Debug\MobFoxSampleApp.csprojResolveAssemblyReference.cache
+d:\project_android\pikachu\Gameloft_AI_Template_2013_V106\serveroffline\Can_dy_Ga_me\project.wp8\ads\MobFox-WP7-SDK-1.3.0\MobFoxSampleApp\MobFoxSampleApp\obj\Debug\App.g.cs
+d:\project_android\pikachu\Gameloft_AI_Template_2013_V106\serveroffline\Can_dy_Ga_me\project.wp8\ads\MobFox-WP7-SDK-1.3.0\MobFoxSampleApp\MobFoxSampleApp\obj\Debug\MainPage.g.cs
+d:\project_android\pikachu\Gameloft_AI_Template_2013_V106\serveroffline\Can_dy_Ga_me\project.wp8\ads\MobFox-WP7-SDK-1.3.0\MobFoxSampleApp\MobFoxSampleApp\obj\Debug\MobFoxSampleApp.g.resources
+d:\project_android\pikachu\Gameloft_AI_Template_2013_V106\serveroffline\Can_dy_Ga_me\project.wp8\ads\MobFox-WP7-SDK-1.3.0\MobFoxSampleApp\MobFoxSampleApp\obj\Debug\MobFoxSampleApp.dll
+d:\project_android\pikachu\Gameloft_AI_Template_2013_V106\serveroffline\Can_dy_Ga_me\project.wp8\ads\MobFox-WP7-SDK-1.3.0\MobFoxSampleApp\MobFoxSampleApp\obj\Debug\MobFoxSampleApp.pdb
+d:\project_android\pikachu\Gameloft_AI_Template_2013_V106\serveroffline\Can_dy_Ga_me\project.wp8\ads\MobFox-WP7-SDK-1.3.0\MobFoxSampleApp\MobFoxSampleApp\obj\Debug\XapCacheFile.xml
