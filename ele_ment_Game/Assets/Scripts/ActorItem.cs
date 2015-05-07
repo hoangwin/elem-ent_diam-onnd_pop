@@ -87,9 +87,16 @@ public class ActorItem : MonoBehaviour
         }
         else if (value > 0 && value <= 10)
         {
-            Debug.Log(value - 5 - 1);
+//            Debug.Log(value - 5 - 1);
 			spriteRenderer.sprite = GamePlay.instance.ItemSpriteDisable[value - 5 - 1];
 			
+        }
+        else if (value > 10 && value <= 15)
+        {
+            //            Debug.Log(value - 5 - 1);
+            spriteRenderer.sprite = GamePlay.instance.LineSprite[value - 10];
+            spriteRenderer.sortingOrder = 1;
+
         }
     }
    
@@ -102,6 +109,10 @@ public class ActorItem : MonoBehaviour
 		case STATE_IDE:
 			break;
 		case STATE_MOVE:
+			if(GamePlay.GameMode == 1)
+			{
+
+			}
           //  transform.Translate(3*move_x * Time.deltaTime, 3*move_y * Time.deltaTime, 0);
 
            // Debug.Log(move_x + "," + move_y);
@@ -126,6 +137,7 @@ public class ActorItem : MonoBehaviour
 	}
 	void Movecompleted()
 	{
+		state = STATE_IDE;
 		Debug.Log ("Completed");
 	}
     void OnCollisionEnter2D(Collision2D other)

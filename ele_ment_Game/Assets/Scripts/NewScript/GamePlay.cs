@@ -3,7 +3,6 @@ using System.Collections;
 
 public class GamePlay : MonoBehaviour
 {
-
     // Use this for initialization
     public GameObject frefabItem;//item binh thuong go, nen hoac item ko di chuyen
 	//public GameObject frefabItemMove;//item di chuyen khac nhau la the m rigibody2d
@@ -12,7 +11,7 @@ public class GamePlay : MonoBehaviour
 
     public static int MAX_COL = 7;
     public static int MAX_ROW = 8;
-    public static int MAX_ITEM = 4;
+    
     public static float ITEM_WIDTH = 60;
     public static float ITEM_HEIGHT = 60;
     //SpriteRenderer a;
@@ -20,23 +19,13 @@ public class GamePlay : MonoBehaviour
     public UnityEngine.Sprite[] LineSprite;
     public UnityEngine.Sprite[] ItemSpriteEnable;
     public UnityEngine.Sprite[] ItemSpriteDisable;
+
     public ActorItem[][] mapArray;//luu nhung gia tri co the di chuyen + ban do
 	public ActorItem[][] mapArrayDisable;//mang luu nhung gia tri dung yen
     public Transform tranformObjSelect;
 
     public static bool isIGM;
-
-
     public static bool isCompleted;
-
-    public static bool isHint = true;
-    public static float mHintx = 0;
-    public static float mHinty = 0;
-    public static float mHintBeginx = 0;
-    public static float mHintBeginy = 0;
-    public static float mHintEndx = 0;
-    public static float mHintEndy = 0;
-    public static int mHintCount = 0;
 
     public static float BEGIN_X = 0;
     public static float BEGIN_Y = 0;
@@ -47,16 +36,16 @@ public class GamePlay : MonoBehaviour
 
     public static int COL_SELECT = -1;
     public static int ROW_SELECT = -1;
+
     public static Vector3 beginInput;//input touch
     public static Vector3 endInput;//touch input
     public static bool isSelectItem = false;
 
     public static ArrayList arrayList = new ArrayList();
-
-
     public static ArrayList arrayListUndo = new ArrayList();
 
     public static ActorItem currentActor;
+	public static int GameMode = 1;//0 -> ko co duong di//1 -> co duong chay theo
     void Start()
     {
         instance = this;
@@ -159,7 +148,7 @@ public class GamePlay : MonoBehaviour
         ITEM_WIDTH = width/MAX_COL;
         Debug.Log(MAX_COL);
         float  scale = ITEM_WIDTH/ ((Collider2D)(frefabItem.GetComponent<Collider2D>())).bounds.size.x + 0.01f;
-        Debug.Log(scale);
+//        Debug.Log(scale);
         frefabItem.transform.localScale = new Vector3(frefabItem.transform.localScale.x*scale, frefabItem.transform.localScale.y* scale, 1);
         //frefabItemMove.transform.localScale = new Vector3(frefabItemMove.transform.localScale.x * scale, frefabItemMove.transform.localScale.y * scale, 1);
 
@@ -183,19 +172,7 @@ public class GamePlay : MonoBehaviour
         gameEngine.Start();
         isIGM = false;
         isCompleted = false;
-        if (GameEngine.mcurrentlevel == 0)
-        {
-            isHint = true;
-            mHintBeginx = mHintx = 110 * DEF.scaleX;
-            mHintBeginy = mHinty = 930 * DEF.scaleY;
-            mHintEndx = 600 * DEF.scaleX;
-            mHintEndy = 930 * DEF.scaleY;
-            mHintCount = 0;
-        }
-        else
-        {
-            isHint = false;
-        }
+       
     }
     public static int getTargetScore()
     {
@@ -234,8 +211,23 @@ public class GamePlay : MonoBehaviour
         {
             getRowColSelect();
         }
-       
-        // gameEngine.Update();
+		if (currentActor != null && currentActor.state == ActorItem.STATE_MOVE) 
+		{
+			if (GameMode == 1) 
+			{
+				ROW_SELECT = (int)((currentActor.transform.position.y - BEGIN_Y) / ITEM_HEIGHT);
+				COL_SELECT = (int)((currentActor.transform.position.x - BEGIN_X) / ITEM_WIDTH);
+
+
+
+                if (currentActor.currentRow != ROW_SELECT || currentActor.currentCol != COL_SELECT)
+                {
+                    Debug.Log(ROW_SELECT + "," + COL_SELECT);
+                    mapArray[ROW_SELECT][COL_SELECT].setActorItem(currentActor.value + 10);
+                }
+			}
+		}
+		// gameEngine.Update();
     }
     public void getRowColSelect()
     {
@@ -276,19 +268,7 @@ public class GamePlay : MonoBehaviour
 								//        break;
 						}
 				}
-        for (int i = 0; i < arrayList.Count; i++)
-        {
-            currentActor = (ActorItem)(arrayList[i]);
-            if (currentActor.currentCol == COL_SELECT && currentActor.currentRow == ROW_SELECT)
-            {
-                if (currentActor.value < 5)
-                {
-                    isSelectItem = true;
-                    //Debug.Log("Ten Ten Ten" + ROW_SELECT + " ," + COL_SELECT + "," + currentActor.value);
-                    break;
-                }
-            }
-        }
+        
 
     }
 
@@ -316,7 +296,7 @@ public class GamePlay : MonoBehaviour
         float detaly = endInput.y - beginInput.y;
         if (detalx > 0.2f || detaly > 0.2f || detalx < -0.2f || detaly < -0.2f)
         {
-            Debug.Log(detalx + ",,,," + detaly);
+           // Debug.Log(detalx + ",,,," + detaly);
             if (Mathf.Abs(detalx) > Mathf.Abs(detaly))
             {
                 currentActor.move_x = detalx / Mathf.Abs(detalx);
@@ -345,63 +325,58 @@ public class GamePlay : MonoBehaviour
 				// lay toa do luc dau
 				float x = BEGIN_X + currentActor.currentCol * ITEM_WIDTH + ITEM_WIDTH / 2;;
 				float y = BEGIN_Y + currentActor.currentRow * ITEM_WIDTH + ITEM_HEIGHT / 2;;
-				//
-				//mapArray[currentActor.currentRow][currentActor.currentCol].spriteRenderer.sortingOrder = 0;
+
 				currentActor = mapArray[currentActor.targetRow][currentActor.targetCol];
-				//currentActor.spriteRenderer.sortingOrder = 1;
+				currentActor.state =ActorItem.STATE_MOVE;
 				//xong doi gia tri
 				// chuyen tu toa do dau sang toa do moi
 				iTween.MoveFrom(currentActor.gameObject, iTween.Hash("x", x,"y", y, "speed", 5, "EaseType", "linear", "oncomplete", "Movecompleted"));
-
-
-            }
+			}
             Debug.Log("MOVE HERE");
         }
-
     }
 
     public bool checkNewTarget(int movex, int movey)
     {
-
-
 		currentActor.targetRow = currentActor.currentRow;
 		currentActor.targetCol = currentActor.currentCol;
         //Debug.Log(targetRow + ",," + targetCol);
         //Debug.Log(movey + ",,," + movex);
         bool valuereturn = false;
-		while (mapArray[currentActor.targetRow + movey][currentActor.targetCol + movex].value == -1 || mapArray[currentActor.targetRow + movey][currentActor.targetCol + movex].value >= 06)
+        if (GameMode == 0)
         {
-			currentActor.targetCol += movex;
-			currentActor.targetRow += movey;
-            valuereturn = true;
+            while (mapArray[currentActor.targetRow + movey][currentActor.targetCol + movex].value == -1)
+            {
+                currentActor.targetCol += movex;
+                currentActor.targetRow += movey;
+                valuereturn = true;
+            }
         }
+        else if (GameMode ==1)
+        {
+            int valueTarget = mapArray[currentActor.targetRow + movey][currentActor.targetCol + movex].value;
+            ActorItem actoreItemTarget = mapArrayDisable[currentActor.targetRow + movey][currentActor.targetCol + movex];
+         
+            while (valueTarget == -1
+                && (actoreItemTarget == null||(actoreItemTarget != null && (actoreItemTarget.value == currentActor.value + 5)))
+              )
+            {
 
-    //    if (valuereturn)//here can set lai cai map cho dung. khong dung thi toi
-    //    {
-    //       mapArray[targetRow][targetCol] = mapArray[currentActor.currentRow][currentActor.currentCol];
-     //       mapArray[currentActor.currentRow][currentActor.currentCol].value = -1;
-    //    }
-    //    if (currentActor.currentRow != targetRow || currentActor.currentCol != targetCol)
-    //    {
-    //        Debug.Log(("hehe : " + currentActor.currentRow + " ," + currentActor.currentCol + "," + targetRow + "," + targetCol));
-      //      arrayListUndo.Add(new Rect(currentActor.currentRow, currentActor.currentCol, targetRow, targetCol));
-      //  }
-    //    currentActor.currentRow = targetRow;
-    //    currentActor.currentCol = targetCol;
+                currentActor.targetCol += movex;
+                currentActor.targetRow += movey;
 
-    //    currentActor.targetX = BEGIN_X + targetCol * ITEM_WIDTH + ITEM_WIDTH / 2;
-    //    currentActor.targetY = BEGIN_Y + targetRow * ITEM_HEIGHT + ITEM_HEIGHT / 2;
-        //change value in mapraay
+                valueTarget = mapArray[currentActor.targetRow + movey][currentActor.targetCol + movex].value;                
+                actoreItemTarget = mapArrayDisable[currentActor.targetRow + movey][currentActor.targetCol + movex];
 
-        // Debug.Log(targetRow + ",," + targetCol);
+                valuereturn = true;
+            }
+        }
 
         return valuereturn;
 
     }
     void OnGUI()
     {
-      
-
         float x = 0;
         float y = 0;
         for (int i = 0; i < GameEngine.MAX_ROW; i++)
@@ -419,26 +394,8 @@ public class GamePlay : MonoBehaviour
       //      GUI.DrawTexture(new Rect(0 * DEF.scaleX, 230 * DEF.scaleY, Screen.width, 1100 * DEF.scaleY), Blocked_BackGround);
        //     GUI.DrawTexture(new Rect(0 * DEF.scaleX, 230 * DEF.scaleY, 400 * DEF.scaleX, 400 * DEF.scaleY), Blocked);
         }
-
-       
-
-
     }
-    public void drawHint()
-    {
-        if (isHint)
-        {
-       //     GUI.DrawTexture(new Rect(mHintx, mHinty, 100 * DEF.scaleY, 110 * DEF.scaleY), Finger);
-            mHintx += 3 * DEF.scaleX;
-            if (mHintx > mHintEndx)
-            {
-                mHintx = mHintBeginx;
-                mHintCount++;
-                if (mHintCount > 2)
-                    isHint = false;
-            }
-        }
-    }
+    
 
     void DrawQuad(Rect position, Color color)
     {

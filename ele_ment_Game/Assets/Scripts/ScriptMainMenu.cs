@@ -79,15 +79,7 @@ public class ScriptMainMenu : MonoBehaviour {
             Application.LoadLevel("SceneSelectLevel");
             DEF.playSounBack(this);
         }
-        //GUI.skin = a;
-        /*
-        if (GUI.Button(new Rect(Screen.width / 2 - 240 * DEF.scaleX, (360 + 2 * 140) * DEF.scaleY, 480 * DEF.scaleX, 140 * DEF.scaleY), "Challenge"))
-        {
-            GameEngine.gameMode = 1;
-            Application.LoadLevel("SceneHint");
-            DEF.playSounBack(this);
-        }
-         */
+
 
         if (DEF.isSoundEnable)
             GUI.skin = skinButtonSoundOn;
