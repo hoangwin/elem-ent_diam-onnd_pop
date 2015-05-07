@@ -39,7 +39,7 @@ public class DEF : MonoBehaviour
         m_VerSize = Camera.main.orthographicSize * 2.0f;        
         m_horSize = m_VerSize * Screen.width / Screen.height;
 
-        Debug.Log(m_VerSize);
+       // Debug.Log(m_VerSize);
 	}
     public static Vector3 Vec3(float PixelX, float PixelY, float z = 0)
     {
@@ -53,7 +53,7 @@ public class DEF : MonoBehaviour
         if (SounBack != null)
         {
            // Debug.Log("Play Sound");
-            SounBack.audio.Play();
+            SounBack.GetComponent<AudioSource>().Play();
         }
     }
     
@@ -76,7 +76,7 @@ public class DEF : MonoBehaviour
         if (SounBack != null)
         {
             // Debug.Log("Play Sound");
-            SounBack.audio.Play();
+            SounBack.GetComponent<AudioSource>().Play();
         }
     }
     public static void playSound(string str)
@@ -87,7 +87,7 @@ public class DEF : MonoBehaviour
         if (SounBack != null)
         {
             // Debug.Log("Play Sound");
-            SounBack.audio.Play();
+            SounBack.GetComponent<AudioSource>().Play();
         }
     }
 }

@@ -100,8 +100,8 @@ public class ScriptMainMenu : MonoBehaviour {
             if(DEF.isSoundEnable)
             {   
                   if (gameMusic) {
-                      if (!gameMusic.audio.isPlaying)
-                            gameMusic.audio.Play();
+                      if (!gameMusic.GetComponent<AudioSource>().isPlaying)
+                            gameMusic.GetComponent<AudioSource>().Play();
                   }
             
              }
@@ -109,8 +109,8 @@ public class ScriptMainMenu : MonoBehaviour {
                   {
 
                   if (gameMusic) {
-                      if (gameMusic.audio.isPlaying)
-                            gameMusic.audio.Stop();
+                      if (gameMusic.GetComponent<AudioSource>().isPlaying)
+                            gameMusic.GetComponent<AudioSource>().Stop();
                   }
             }
 
@@ -141,9 +141,9 @@ public class ScriptMainMenu : MonoBehaviour {
       GameObject gameMusic = GameObject.Find("BGMusic");
         
       if (gameMusic) {
-          if (!gameMusic.audio.isPlaying)
+          if (!gameMusic.GetComponent<AudioSource>().isPlaying)
               if (DEF.isSoundEnable)
-                gameMusic.audio.Play();
+                gameMusic.GetComponent<AudioSource>().Play();
             // kill game music
       //  Destroy(gameMusic);
        }
