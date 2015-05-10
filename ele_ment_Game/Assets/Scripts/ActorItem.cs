@@ -78,12 +78,13 @@ public class ActorItem : MonoBehaviour
         {
             boxCollider2D.enabled = false;
             spriteRenderer.sprite = GamePlay.instance.LineSprite[0];
+            spriteRenderer.sortingOrder = 0;
 			
         }
         else if (value > 0 && value < 6)//0 = buc tuong amc dinh
         {
             spriteRenderer.sprite = GamePlay.instance.ItemSpriteEnable[value - 1];
-			
+            spriteRenderer.sortingOrder = 2;
         }
         else if (value > 0 && value <= 10)
         {
@@ -154,6 +155,6 @@ public class ActorItem : MonoBehaviour
 
     public void destroy()
     {
-        
+        GameObject.Destroy(gameObject);
     }
 }

@@ -23,6 +23,7 @@ public class ScriptHighScore : MonoBehaviour
 
 	// Use this for initialization
     public static string strUserName = "InputName";
+    public static string username;
 	void Start () {
         DEF.init();
 
@@ -31,8 +32,8 @@ public class ScriptHighScore : MonoBehaviour
         guiSkinLabel.label.fontSize = (int)(60 * DEF.scaleY);
         //Update: http://gamethuanviet.com/candypophd/SetGetData.php?type=update&username=%s&Score=%d&Level=0&Played=0&country=NA 
         // http://gamethuanviet.com/candypophd/SetGetData.php?type=select&username=%s
-        Debug.Log(GameEngine.username);
-        if (GameEngine.username.Length >= 6)
+        Debug.Log(username);
+        if (username.Length >= 6)
         {
             PostHightScore();
             getHightScore();
@@ -60,9 +61,9 @@ public class ScriptHighScore : MonoBehaviour
       //  GUI.DrawTexture(new Rect(0 * DEF.scaleX, 300 * DEF.scaleY, Screen.width, 600 * DEF.scaleY), Dialog);
 
         myStyle.normal.textColor = Color.white;
-        if (GameEngine.username.Length < 6)
+        if (username.Length < 6)
         {
-            Debug.Log(GameEngine.username);
+            Debug.Log(username);
             string str = "Must more than 6 charracter";
             GUI.Label(new Rect(70 * DEF.scaleX, 100 * DEF.scaleY, 640 * DEF.scaleX, 400 * DEF.scaleY), str, myStyle);
             strUserName = GUI.TextField(new Rect(100 * DEF.scaleX, 400 * DEF.scaleY, 600 * DEF.scaleX, 80 * DEF.scaleY), strUserName, 12);
@@ -75,7 +76,7 @@ public class ScriptHighScore : MonoBehaviour
                 if (GUI.Button(new Rect(Screen.width / 2 - 240 * DEF.scaleX, 500 * DEF.scaleY, 480 * DEF.scaleX, 120 * DEF.scaleY), "OK"))
                 {
                     // Application.LoadLevel("SceneGamePlay");             
-                    GameEngine.username = strUserName;
+                    username = strUserName;
                     ScriptMainMenu.saveGame();
                     PostHightScore();
                     getHightScore();
@@ -118,8 +119,8 @@ public class ScriptHighScore : MonoBehaviour
     }
     public void  getHightScore()
     {
-        WWW www = new WWW("http://gamethuanviet.com/candypophd/SetGetData.php?type=select&username="+ GameEngine.username);
-        Debug.Log("http://gamethuanviet.com/candypophd/SetGetData.php?type=select&username=" + GameEngine.username);
+        WWW www = new WWW("http://gamethuanviet.com/candypophd/SetGetData.php?type=select&username="+ username);
+        Debug.Log("http://gamethuanviet.com/candypophd/SetGetData.php?type=select&username=" + username);
         while (!www.isDone)
         {
 

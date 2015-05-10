@@ -34,7 +34,7 @@ public class ScriptSelectLevel : MonoBehaviour {
         SPACING = (int)(30 * DEF.scaleX);
         WIDTH = (int)(150 * DEF.scaleX);
         HEIGHT = (int)(150 * DEF.scaleY);
-        mcurrentPage = GameEngine.mUnlocklevel / (MAX_COL * MAX_ROW);
+        mcurrentPage = GamePlay.mUnlocklevel / (MAX_COL * MAX_ROW);
         if (mcurrentPage < 0)
             mcurrentPage = MAX_PAGE - 1;
         if (mcurrentPage >= MAX_PAGE)
@@ -93,13 +93,13 @@ public class ScriptSelectLevel : MonoBehaviour {
             for(int j = 0;j<MAX_COL;j++)
             {
 
-                if (mcurrentPage * MAX_COL * MAX_ROW + i * MAX_COL + j <= GameEngine.mUnlocklevel)
+                if (mcurrentPage * MAX_COL * MAX_ROW + i * MAX_COL + j <= GamePlay.mUnlocklevel)
                 {
                     GUI.skin = guiSkinSelectLevelNormal;
                     if (GUI.Button(new Rect(START_X + j * (WIDTH + SPACING), START_Y + i * (HEIGHT + SPACING/2), WIDTH, HEIGHT), "" + (mcurrentPage*MAX_COL*MAX_ROW+ i * MAX_COL + j + 1)))
                     {
                         DEF.playSounBack(this);
-                        GameEngine.mcurrentlevel = mcurrentPage * MAX_COL * MAX_ROW + i * MAX_COL + j;
+                        GamePlay.mcurrentlevel = mcurrentPage * MAX_COL * MAX_ROW + i * MAX_COL + j;
                         //Application.LoadLevel("SceneHint");
                         Application.LoadLevel("SceneGamePlay");
 

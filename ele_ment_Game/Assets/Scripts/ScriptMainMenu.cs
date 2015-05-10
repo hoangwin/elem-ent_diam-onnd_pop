@@ -30,52 +30,32 @@ public class ScriptMainMenu : MonoBehaviour {
 	}
     public static void saveGame()
     {
-        
-        PlayerPrefs.SetInt(DEF.STRING_UNLOCK_LEVEL, GameEngine.mUnlocklevel);
+
+        PlayerPrefs.SetInt(DEF.STRING_UNLOCK_LEVEL, GamePlay.mUnlocklevel);
       //  PlayerPrefs.SetInt("USER_TOPLEVEL", GameEngine.mTopScore);
-        PlayerPrefs.SetString("USER_NAME", GameEngine.username);
+        PlayerPrefs.SetString("USER_NAME", ScriptHighScore.username);
         PlayerPrefs.Save();
     }
     public static void loadGame()
     {
-        GameEngine.mUnlocklevel = PlayerPrefs.GetInt(DEF.STRING_UNLOCK_LEVEL);
+        GamePlay.mUnlocklevel = PlayerPrefs.GetInt(DEF.STRING_UNLOCK_LEVEL);
         //if (GameEngine.mUnlocklevel < 95) GameEngine.mUnlocklevel = 95;
       //  GameEngine.mTopScore = PlayerPrefs.GetInt("USER_TOPLEVEL");
-        GameEngine.username = PlayerPrefs.GetString("USER_NAME");
+        ScriptHighScore.username = PlayerPrefs.GetString("USER_NAME");
     }
 
+    /*
 	void OnGUI()
     {
-        GUI.skin = skinButtonNormal;
-        skinButtonNormal.button.fontSize = (int)(60 * DEF.scaleY);
-        skinButtonNormal.label.fontSize = (int)(60 * DEF.scaleY);
-      /*  if (DEF.isNeedSoundQuestion)
-        {
-            GUI.DrawTexture(new Rect(0 * DEF.scaleX, 300 * DEF.scaleY, Screen.width, 600 * DEF.scaleY), dialogTextture);
-            GUI.Label(new Rect(100 * DEF.scaleX, 400 * DEF.scaleY, 600 * DEF.scaleX, 300 * DEF.scaleY),  "Do You want Play sound in game?");
-
-            if (GUI.Button(new Rect( 100 * DEF.scaleX, 700* DEF.scaleY, 250 * DEF.scaleX, 120 * DEF.scaleY), "Yes"))
-            {
-                //soundBack.PlayOneShot();
-                DEF.isNeedSoundQuestion = true;
-              
-            }
-            if (GUI.Button(new Rect(480* DEF.scaleX, 700 * DEF.scaleY, 250 * DEF.scaleX, 120 * DEF.scaleY), "No"))
-            {
-                //soundBack.PlayOneShot();
-                DEF.isNeedSoundQuestion = false;
-               
-            }
-            return;
-        }
-       * */
       
-        GUI.skin = skinButtonNormal;
+      
+      
+      
         if (GUI.Button(new Rect(Screen.width / 2 - 240 * DEF.scaleX, (400 + 1 * 140) * DEF.scaleY, 480 * DEF.scaleX, 140 * DEF.scaleY), "Play"))
         {
 			//soundBack.PlayOneShot();
-           
-            GameEngine.gameMode = 0;
+
+            
             Application.LoadLevel("SceneSelectLevel");
             DEF.playSounBack(this);
         }
@@ -126,6 +106,7 @@ public class ScriptMainMenu : MonoBehaviour {
         
 	
 	}
+     */ 
     void Awake()
     {
 
