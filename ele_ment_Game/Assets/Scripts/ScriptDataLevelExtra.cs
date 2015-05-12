@@ -23,8 +23,7 @@ public class ScriptDataLevelExtra : MonoBehaviour {
             new int[] { 00, 00, 00, 00, 00, 00},
             new int[] { 00, -1, -1, -1, -1, 00},
             new int[] { 00, -1, -1, -1, -1, 00},
-            new int[] { 00, -1, -1, -1, -1, 00},
-            new int[] { 00, -1, -1, -1, -1, 00},
+            new int[] { 00, -1, -1, -1, -1, 00},            
             new int[] { 00, 01, -1, -1, 06, 00},            
             new int[] { 00, 00, 00, 00, 00, 00},
             

@@ -28,6 +28,7 @@ public class ActorItem : MonoBehaviour
     public static float SPEED_MOVE = 30*DEF.scaleX;
 
     public SpriteRenderer spriteRenderer;
+    public GameObject gameObjectFlag;
 
     public BoxCollider2D boxCollider2D;
     public ActorItem()
@@ -74,12 +75,25 @@ public class ActorItem : MonoBehaviour
 	}
     public void setAnim()
     {
-        if (value == -1)//o trong
+        if (currentCol == GamePlay.MAX_COL - 1 || currentCol == 0 || currentRow == GamePlay.MAX_ROW - 1 || currentRow == 0)//Duong boc o ngoai
+        {
+            boxCollider2D.enabled = false;
+            //spriteRenderer.sprite = GamePlay.instance.LineSprite[0];
+         //   Debug.Log("aaaa");
+            spriteRenderer.sortingOrder = -2;
+
+        }else   if (value == -1)//o trong
         {
             boxCollider2D.enabled = false;
             spriteRenderer.sprite = GamePlay.instance.LineSprite[0];
             spriteRenderer.sortingOrder = 0;
 			
+        }
+        if(value == 100)//flag
+        {
+                boxCollider2D.enabled = false;
+                spriteRenderer.sprite = GamePlay.instance.FlagSprite;
+                spriteRenderer.sortingOrder = 0;
         }
         else if (value > 0 && value < 6)//0 = buc tuong amc dinh
         {
@@ -97,7 +111,6 @@ public class ActorItem : MonoBehaviour
             //            Debug.Log(value - 5 - 1);
             spriteRenderer.sprite = GamePlay.instance.LineSprite[value - 10];
             spriteRenderer.sortingOrder = 1;
-
         }
     }
    
@@ -140,6 +153,10 @@ public class ActorItem : MonoBehaviour
 	{
 		state = STATE_IDE;
 		Debug.Log ("Completed");
+        if (GamePlay.instance.mapArrayDisable [currentRow][currentCol] != null&& value == GamePlay.instance.mapArrayDisable [currentRow][currentCol].value - 5)
+        {
+            GamePlay.instance.mapArrayDisable[currentRow][currentCol].gameObjectFlag.SetActive(true);
+        }
 	}
     void OnCollisionEnter2D(Collision2D other)
     {
@@ -155,6 +172,8 @@ public class ActorItem : MonoBehaviour
 
     public void destroy()
     {
+        if (gameObjectFlag!= null)
+            GameObject.Destroy(gameObjectFlag);
         GameObject.Destroy(gameObject);
     }
 }

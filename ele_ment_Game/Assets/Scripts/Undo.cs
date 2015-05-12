@@ -55,6 +55,12 @@ public class Undo : MonoBehaviour {
             int tempvalue1 = GamePlay.instance.mapArray[row1][col1].value;
             int tempvalue2 = GamePlay.instance.mapArray[row2][col2].value;
 
+            if (GamePlay.instance.mapArrayDisable[row1][col1] != null && GamePlay.instance.mapArray[row1][col1].value == GamePlay.instance.mapArrayDisable[row1][col1].value - 5)
+            {
+                GamePlay.instance.mapArrayDisable[row1][col1].gameObjectFlag.SetActive(false);
+            }
+
+
             GamePlay.instance.mapArray[row1][col1].setActorItem(tempvalue2);//, currentActor.currentRow, currentActor.currentCol, float _currentX, float _currentY, int _state//)
             GamePlay.instance.mapArray[row2][col2].setActorItem(tempvalue1);
 
@@ -79,6 +85,8 @@ public class Undo : MonoBehaviour {
                 tempx = -tempx / Mathf.Abs(tempx);
             if (tempy != 0)
                 tempy = -tempy / Mathf.Abs(tempy);
+
+          
             while(col1 != col2 || row1 != row2)
             {
                 Debug.Log("Undo:" + col1 + "," + col2 + "," + row1 + "," + row2);
