@@ -22,18 +22,18 @@ public class ScriptSelectLevel : MonoBehaviour {
     int HEIGHT;
 	// Use this for initialization
 	void Start () {
-        DEF.init();
+       // DEF.init();
         
-        guiSkinSelectLevelNormal.button.fontSize = (int)(60 * DEF.scaleY);
-        guiSkinSelectLevelDIsable.button.fontSize = (int)(60 * DEF.scaleY);
-        guiSkinSelectLevelBack.button.fontSize = (int)(60 * DEF.scaleY);
-        guiSkinLabel.label.fontSize = (int)(60 * DEF.scaleY);
+       // guiSkinSelectLevelNormal.button.fontSize = (int)(60 * DEF.scaleY);
+       // guiSkinSelectLevelDIsable.button.fontSize = (int)(60 * DEF.scaleY);
+      //  guiSkinSelectLevelBack.button.fontSize = (int)(60 * DEF.scaleY);
+       // guiSkinLabel.label.fontSize = (int)(60 * DEF.scaleY);
 
-        START_X = (int)(60 * DEF.scaleX);
-        START_Y = (int)( 155 * DEF.scaleX) ;
-        SPACING = (int)(30 * DEF.scaleX);
-        WIDTH = (int)(150 * DEF.scaleX);
-        HEIGHT = (int)(150 * DEF.scaleY);
+      //  START_X = (int)(60 * DEF.scaleX);
+      //  START_Y = (int)( 155 * DEF.scaleX) ;
+      //  SPACING = (int)(30 * DEF.scaleX);
+     //   WIDTH = (int)(150 * DEF.scaleX);
+     //   HEIGHT = (int)(150 * DEF.scaleY);
         mcurrentPage = GamePlay.mUnlocklevel / (MAX_COL * MAX_ROW);
         if (mcurrentPage < 0)
             mcurrentPage = MAX_PAGE - 1;
@@ -57,23 +57,23 @@ public class ScriptSelectLevel : MonoBehaviour {
         GUI.skin = guiSkinLabel; 
        // myStyle.font.
         myStyle.normal.textColor = Color.yellow;
-        GUI.Label(new Rect(Screen.width / 2 - 800 / 2 * DEF.scaleX, 20 * DEF.scaleY, 800 * DEF.scaleX, 60 * DEF.scaleY), "SELECT LEVEL", myStyle);
+     //   GUI.Label(new Rect(Screen.width / 2 - 800 / 2 * DEF.scaleX, 20 * DEF.scaleY, 800 * DEF.scaleX, 60 * DEF.scaleY), "SELECT LEVEL", myStyle);
 
        // myStyle.normal.textColor = Color.white;
-        GUI.Label(new Rect(0, 950 * DEF.scaleY,Screen.width, 60 * DEF.scaleY),(mcurrentPage+ 1) +" /" + MAX_PAGE, myStyle);
-        GUI.skin = guiSkinPre;
-        if (GUI.Button(new Rect(150 * DEF.scaleX, 920 * DEF.scaleY, WIDTH, HEIGHT), " "))
+     //   GUI.Label(new Rect(0, 950 * DEF.scaleY,Screen.width, 60 * DEF.scaleY),(mcurrentPage+ 1) +" /" + MAX_PAGE, myStyle);
+     //   GUI.skin = guiSkinPre;
+      //  if (GUI.Button(new Rect(150 * DEF.scaleX, 920 * DEF.scaleY, WIDTH, HEIGHT), " "))
         {
-            DEF.playSounBack(this);
+     //       DEF.playSounBack(this);
             mcurrentPage--;
             if (mcurrentPage < 0)
                 mcurrentPage = MAX_PAGE - 1;
         }
 
         GUI.skin = guiSkinNext;
-        if (GUI.Button(new Rect(500 * DEF.scaleX, 920 * DEF.scaleY, WIDTH, HEIGHT), " "))
+    //    if (GUI.Button(new Rect(500 * DEF.scaleX, 920 * DEF.scaleY, WIDTH, HEIGHT), " "))
         {
-            DEF.playSounBack(this);
+     //       DEF.playSounBack(this);
             mcurrentPage++;
             if (mcurrentPage >= MAX_PAGE)
                 mcurrentPage = 0;
@@ -81,9 +81,9 @@ public class ScriptSelectLevel : MonoBehaviour {
 
 
         GUI.skin = guiSkinSelectLevelBack;
-        if (GUI.Button(new Rect(Screen.width - 140 * DEF.scaleX, 0, 140 * DEF.scaleX, 140 * DEF.scaleY), ""))
+     //   if (GUI.Button(new Rect(Screen.width - 140 * DEF.scaleX, 0, 140 * DEF.scaleX, 140 * DEF.scaleY), ""))
         {
-            DEF.playSounBack(this);
+    //        DEF.playSounBack(this);
             Application.LoadLevel("SceneMainMenu");
         }
 
@@ -98,7 +98,7 @@ public class ScriptSelectLevel : MonoBehaviour {
                     GUI.skin = guiSkinSelectLevelNormal;
                     if (GUI.Button(new Rect(START_X + j * (WIDTH + SPACING), START_Y + i * (HEIGHT + SPACING/2), WIDTH, HEIGHT), "" + (mcurrentPage*MAX_COL*MAX_ROW+ i * MAX_COL + j + 1)))
                     {
-                        DEF.playSounBack(this);
+        //                DEF.playSounBack(this);
                         GamePlay.mcurrentlevel = mcurrentPage * MAX_COL * MAX_ROW + i * MAX_COL + j;
                         //Application.LoadLevel("SceneHint");
                         Application.LoadLevel("SceneGamePlay");

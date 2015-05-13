@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ScriptMainMenu : MonoBehaviour {
+public class ScriptMainMenu : MonoBehaviour
+{
 
-	// Use this for initialization
-	
+    // Use this for initialization
+
     public GUISkin skinButtonNormal;
     public GUISkin skinButtonSoundOn;
     public GUISkin skinButtonSoundOff;
@@ -14,33 +15,34 @@ public class ScriptMainMenu : MonoBehaviour {
     //public Texture dialogTextture;
     void Start()
     {
-        
+
         loadGame();
-        DEF.init();
-        GUI.matrix = Matrix4x4.TRS(new Vector3(0, 0, 0), Quaternion.identity,new  Vector3(DEF.scaleX, DEF.scaleY, 1));
-     
-	}
-	 
-	// Update is called once per frame
-	void Update () {
+        //   DEF.init();
+        //   GUI.matrix = Matrix4x4.TRS(new Vector3(0, 0, 0), Quaternion.identity,new  Vector3(DEF.scaleX, DEF.scaleY, 1));
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();
         }
-	}
+    }
     public static void saveGame()
     {
 
-        PlayerPrefs.SetInt(DEF.STRING_UNLOCK_LEVEL, GamePlay.mUnlocklevel);
-      //  PlayerPrefs.SetInt("USER_TOPLEVEL", GameEngine.mTopScore);
+        //   PlayerPrefs.SetInt(DEF.STRING_UNLOCK_LEVEL, GamePlay.mUnlocklevel);
+        //  PlayerPrefs.SetInt("USER_TOPLEVEL", GameEngine.mTopScore);
         PlayerPrefs.SetString("USER_NAME", ScriptHighScore.username);
         PlayerPrefs.Save();
     }
     public static void loadGame()
     {
-        GamePlay.mUnlocklevel = PlayerPrefs.GetInt(DEF.STRING_UNLOCK_LEVEL);
+        //   GamePlay.mUnlocklevel = PlayerPrefs.GetInt(DEF.STRING_UNLOCK_LEVEL);
         //if (GameEngine.mUnlocklevel < 95) GameEngine.mUnlocklevel = 95;
-      //  GameEngine.mTopScore = PlayerPrefs.GetInt("USER_TOPLEVEL");
+        //  GameEngine.mTopScore = PlayerPrefs.GetInt("USER_TOPLEVEL");
         ScriptHighScore.username = PlayerPrefs.GetString("USER_NAME");
     }
 
@@ -106,29 +108,31 @@ public class ScriptMainMenu : MonoBehaviour {
         
 	
 	}
-     */ 
+     */
     void Awake()
     {
 
-      Debug.Log("TOAN STT");
-      GameObject gameMusic = GameObject.Find("BGMusic");
-        
-      if (gameMusic) {
-          if (!gameMusic.GetComponent<AudioSource>().isPlaying)
-              if (DEF.isSoundEnable)
-                gameMusic.GetComponent<AudioSource>().Play();
-            // kill game music
-      //  Destroy(gameMusic);
-       }
-       DontDestroyOnLoad(gameMusic);
+        Debug.Log("TOAN STT");
+        GameObject gameMusic = GameObject.Find("BGMusic");
 
-       GameObject selectSound = GameObject.Find("EffectMusic");
-       //if (selectSound)
-       //{
-       // kill game music
-       //  Destroy(selectSound);
-       //}
-       DontDestroyOnLoad(selectSound);
+        if (gameMusic)
+        {
+            if (!gameMusic.GetComponent<AudioSource>().isPlaying)
+                //         if (DEF.isSoundEnable)
+                //          gameMusic.GetComponent<AudioSource>().Play();
+                // kill game music
+                //  Destroy(gameMusic);
+                // }
+                DontDestroyOnLoad(gameMusic);
+
+            GameObject selectSound = GameObject.Find("EffectMusic");
+            //if (selectSound)
+            //{
+            // kill game music
+            //  Destroy(selectSound);
+            //}
+            DontDestroyOnLoad(selectSound);
+        }
+
     }
-	
 }

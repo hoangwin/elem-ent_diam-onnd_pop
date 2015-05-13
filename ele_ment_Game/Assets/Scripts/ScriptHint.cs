@@ -22,11 +22,11 @@ public class ScriptHint : MonoBehaviour {
     
 	// Use this for initialization
 	void Start () {
-        DEF.init();
+     //   DEF.init();
 
-        guiSkinButtonNormal.button.fontSize = (int)(60 * DEF.scaleY);        
+      //  guiSkinButtonNormal.button.fontSize = (int)(60 * DEF.scaleY);        
         
-        guiSkinLabel.label.fontSize = (int)(60 * DEF.scaleY);
+     //   guiSkinLabel.label.fontSize = (int)(60 * DEF.scaleY);
 
     
 
@@ -37,11 +37,11 @@ public class ScriptHint : MonoBehaviour {
 		if (GamePlay.mcurrentlevel == 0)
 		{
 			isHint = true;
-			mHintBeginx = mHintx = 110 * DEF.scaleX;
-			mHintBeginy = mHinty = 930 * DEF.scaleY;
-			mHintEndx = 600 * DEF.scaleX;
-			mHintEndy = 930 * DEF.scaleY;
-			mHintCount = 0;
+		//	mHintBeginx = mHintx = 110 * DEF.scaleX;
+		//	mHintBeginy = mHinty = 930 * DEF.scaleY;
+		//	mHintEndx = 600 * DEF.scaleX;
+		//	mHintEndy = 930 * DEF.scaleY;
+		//	mHintCount = 0;
 		}
 		else
 		{
@@ -53,7 +53,7 @@ public class ScriptHint : MonoBehaviour {
 		if (isHint)
 		{
 			//     GUI.DrawTexture(new Rect(mHintx, mHinty, 100 * DEF.scaleY, 110 * DEF.scaleY), Finger);
-			mHintx += 3 * DEF.scaleX;
+		//	mHintx += 3 * DEF.scaleX;
 			if (mHintx > mHintEndx)
 			{
 				mHintx = mHintBeginx;

@@ -19,13 +19,12 @@ public class ActorItem : MonoBehaviour
 	public float currentY;
     public int  targetCol;
     public int targetRow;
-
 	
 	public int state;
 
     public float move_x = 0;
     public float move_y = 0;    
-    public static float SPEED_MOVE = 30*DEF.scaleX;
+    
 
     public SpriteRenderer spriteRenderer;
     public GameObject gameObjectFlag;
@@ -152,19 +151,18 @@ public class ActorItem : MonoBehaviour
 	void Movecompleted()
 	{
 		state = STATE_IDE;
-		Debug.Log ("Completed");
+		Debug.Log ("Completed MOve");
         if (GamePlay.instance.mapArrayDisable [currentRow][currentCol] != null&& value == GamePlay.instance.mapArrayDisable [currentRow][currentCol].value - 5)
         {
             GamePlay.instance.mapArrayDisable[currentRow][currentCol].gameObjectFlag.SetActive(true);
         }
+        if(GamePlay.instance.checkWin())
+        {
+       //     Debug.Log("Completed");
+            UIEffect.instance.showCOmpleted();
+        }
 	}
-    void OnCollisionEnter2D(Collision2D other)
-    {
-	//	if (this == GamePlay.currentActor) {
-	//					if ((other.gameObject.GetComponent<ActorItem> ()).value >= 0)
-	//							Debug.Log ("aaa" + (other.gameObject.GetComponent<ActorItem> ()).currentRow + "," + (other.gameObject.GetComponent<ActorItem> ()).currentCol);//characterInQuicksand = true;
-	//			}
-	}
+
 	public void Start () {
 	
 	}

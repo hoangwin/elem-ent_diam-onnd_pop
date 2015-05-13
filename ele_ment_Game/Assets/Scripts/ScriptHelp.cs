@@ -15,11 +15,11 @@ public class ScriptHelp : MonoBehaviour {
     
 	// Use this for initialization
 	void Start () {
-        DEF.init();
+     //   DEF.init();
 
-        guiSkinButtonNormal.button.fontSize = (int)(60 * DEF.scaleY);        
+      //  guiSkinButtonNormal.button.fontSize = (int)(60 * DEF.scaleY);        
         
-        guiSkinLabel.label.fontSize = (int)(60 * DEF.scaleY);
+      //  guiSkinLabel.label.fontSize = (int)(60 * DEF.scaleY);
 
     
 
@@ -48,9 +48,9 @@ public class ScriptHelp : MonoBehaviour {
 
         GUI.skin = guiSkinSelectLevelBack;
 
-        if (GUI.Button(new Rect(Screen.width - 140 * DEF.scaleX, 0, 140 * DEF.scaleX, 140 * DEF.scaleY), " "))
+     //   if (GUI.Button(new Rect(Screen.width - 140 * DEF.scaleX, 0, 140 * DEF.scaleX, 140 * DEF.scaleY), " "))
         {
-            DEF.playSounBack(this);
+      //      DEF.playSounBack(this);
            // if(GameEngine.gameMode == 0)
            //     Application.LoadLevel("SceneSelectLevel");
            // else

@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class DEF : MonoBehaviour
+public class DEF_ : MonoBehaviour
 {
 
 	// Use this for initialization
@@ -17,37 +17,21 @@ public class DEF : MonoBehaviour
 
    // public static bool isNeedSoundQuestion = true;
     public static bool isSoundEnable = true;
+    	
 
-    
-
-	void Start ()
-	{
-		DEF.init();
 	
-	}
-	
-	// Update is called once per frame
-	void Update ()
-	{
-	
-	}
-	public static void  init()
-	{
-		scaleX = Screen.width/800f;
-		scaleY = Screen.height/1280f;
-
-        m_VerSize = Camera.main.orthographicSize * 2.0f;        
-        m_horSize = m_VerSize * Screen.width / Screen.height;
-
-       // Debug.Log(m_VerSize);
-	}
-    public static Vector3 Vec3(float PixelX, float PixelY, float z = 0)
+    public static void FillFullImage(SpriteRenderer sr)
     {
-        return new Vector3(((PixelX * m_horSize / Screen.width) - m_horSize / 2), (m_VerSize / 2 - PixelY * m_VerSize / Screen.height), z);
+        float worldScreenHeight = Camera.main.orthographicSize * 2;
+        float worldScreenWidth = worldScreenHeight * Screen.width/Screen.height;
+        sr.gameObject.transform.localScale = new Vector3(worldScreenWidth / sr.sprite.bounds.size.x,0.02f +worldScreenHeight / sr.sprite.bounds.size.y, 1);
+        Debug.Log(worldScreenHeight + "," + Screen.width + "," + Screen.height +"," +(worldScreenWidth));
+        Debug.Log((sr.sprite.bounds.size.y));
     }
+
     public static void playSounBack(MonoBehaviour scene)
     {
-        if (!DEF.isSoundEnable)
+        if (!isSoundEnable)
             return;
         GameObject SounBack = GameObject.Find("EffectMusic");
         if (SounBack != null)
@@ -59,7 +43,7 @@ public class DEF : MonoBehaviour
     
     public static void playSounEffect(int index)
     {
-        if (!DEF.isSoundEnable)
+        if (!isSoundEnable)
             return;
         string str = "";
         switch(index)
@@ -81,7 +65,7 @@ public class DEF : MonoBehaviour
     }
     public static void playSound(string str)
     {
-        if (!DEF.isSoundEnable)
+        if (!isSoundEnable)
             return;
         GameObject SounBack = GameObject.Find(str);
         if (SounBack != null)
