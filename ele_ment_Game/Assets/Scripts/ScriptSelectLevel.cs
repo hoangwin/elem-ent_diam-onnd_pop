@@ -1,120 +1,154 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class ScriptSelectLevel : MonoBehaviour {
 
-    public GUISkin guiSkinSelectLevelNormal;
-    public GUISkin guiSkinSelectLevelDIsable;
-    public GUISkin guiSkinSelectLevelBack;
-    public GUISkin guiSkinLabel;
-    public GUISkin guiSkinNext;
-    public GUISkin guiSkinPre;
+	public GameObject ButtonTempleted;
 
     
-    public static int MAX_COL = 4;
-    public static int MAX_ROW = 5;
+
     public static int MAX_PAGE = 5;
     public static int mcurrentPage = 0;
-    int START_X;
-    int START_Y;
-    int SPACING;
-    int WIDTH;
-    int HEIGHT;
-	// Use this for initialization
-	void Start () {
-       // DEF.init();
-        
-       // guiSkinSelectLevelNormal.button.fontSize = (int)(60 * DEF.scaleY);
-       // guiSkinSelectLevelDIsable.button.fontSize = (int)(60 * DEF.scaleY);
-      //  guiSkinSelectLevelBack.button.fontSize = (int)(60 * DEF.scaleY);
-       // guiSkinLabel.label.fontSize = (int)(60 * DEF.scaleY);
+	public Text TextPage;
+    public Text textMode;
+	public UnityEngine.Sprite imageOn;
+	public UnityEngine.Sprite imageOFF;
+	public LevelButton[] arrayButton;
+	public GameObject line1;
+	public GameObject line2;
+	public GameObject line3;
+	public GameObject line4;
+	public GameObject line5;
 
-      //  START_X = (int)(60 * DEF.scaleX);
-      //  START_Y = (int)( 155 * DEF.scaleX) ;
-      //  SPACING = (int)(30 * DEF.scaleX);
-     //   WIDTH = (int)(150 * DEF.scaleX);
-     //   HEIGHT = (int)(150 * DEF.scaleY);
-        mcurrentPage = GamePlay.mUnlocklevel / (MAX_COL * MAX_ROW);
-        if (mcurrentPage < 0)
-            mcurrentPage = MAX_PAGE - 1;
-        if (mcurrentPage >= MAX_PAGE)
-            mcurrentPage = 0;
-      //  GUI.matrix = Matrix4x4.TRS(new Vector3(0, 0, 0), Quaternion.identity, new Vector3(DEF.scaleX, DEF.scaleY, 1));
+	public Vector3 vline1;
+	public Vector3 vline2;
+	public Vector3 vline3;
+	public Vector3 vline4;
+	public Vector3 vline5;
+	public static ScriptSelectLevel instance;
+	// Use this for initialization
+	public Image colorFadeEfect;
+	public Color color;
+	void Start () {
+		DEF_.initAndLoadScore ();		
+		color = new Color(colorFadeEfect.color.r,colorFadeEfect.color.g,colorFadeEfect.color.b,colorFadeEfect.color.a);
+		colorFadeEfect.enabled = false;
+		Debug.Log (colorFadeEfect.color.a);
+		float worldScreenHeight = Camera.main.orthographicSize * 2;
+		float worldScreenWidth = worldScreenHeight * Screen.width/Screen.height;
+		
+		if(GamePlay.GameMode ==0)
+			mcurrentPage = DEF_.ScoreModeClassic.NUM/20;
+		else
+			mcurrentPage = DEF_.ScoreModeExtra.NUM/20;
+		vline1 = new Vector3(line1.transform.position.x,line1.transform.position.y,line1.transform.position.z);
+		vline2 = new Vector3(line2.transform.position.x,line2.transform.position.y,line2.transform.position.z);
+		vline3 = new Vector3(line3.transform.position.x,line3.transform.position.y,line3.transform.position.z);
+		vline4 = new Vector3(line4.transform.position.x,line4.transform.position.y,line4.transform.position.z);
+		vline5 = new Vector3(line5.transform.position.x,line5.transform.position.y,line5.transform.position.z);
+		Init ();
+		instance = this;
 	}
-	
+	public void Init()
+	{	
+		line1.transform.position = vline1;
+		line2.transform.position = vline2;
+		line3.transform.position = vline3;
+		line4.transform.position = vline4;
+		line5.transform.position = vline5;
+		//xong doi gia tri
+		// chuyen tu toa do dau sang toa do moi
+		iTween.MoveFrom(line1, iTween.Hash("x", vline1.x + Screen.width,"time", 0.5, "EaseType", "linear"));
+		iTween.MoveFrom(line2, iTween.Hash("x", vline2.x + Screen.width,"time", 0.5, "EaseType", "linear"));
+		iTween.MoveFrom(line3, iTween.Hash("x", vline3.x + Screen.width,"time", 0.5, "EaseType", "linear"));
+		iTween.MoveFrom(line4, iTween.Hash("x", vline4.x + Screen.width,"time", 0.5, "EaseType", "linear"));
+		iTween.MoveFrom(line5, iTween.Hash("x", vline5.x + Screen.width,"time", 0.5, "EaseType", "linear"));
+
+        if (GamePlay.GameMode == 0)
+            textMode.text = "Classic Mode";
+        else
+            textMode.text = "Extra Mode";
+		if (mcurrentPage < 0)
+			mcurrentPage = MAX_PAGE - 1;
+		if (mcurrentPage >= MAX_PAGE)
+			mcurrentPage = 0;
+		
+		TextPage.text = (mcurrentPage + 1).ToString () + "/" + MAX_PAGE.ToString();
+		int tempUnblock = 0;
+		if(GamePlay.GameMode ==0)
+			tempUnblock = DEF_.ScoreModeClassic.NUM;
+		else
+			tempUnblock = DEF_.ScoreModeExtra.NUM;
+		for (int i= 0; i<20; i++) 
+		{
+			int temp = mcurrentPage*20 + i ;
+			if(temp > tempUnblock)
+			{
+				arrayButton[i].index = (temp);
+				arrayButton[i].image.sprite = imageOFF;
+				arrayButton[i].text.text ="";
+
+			}
+			else
+			{
+				arrayButton[i].index = (temp);
+				arrayButton[i].image.sprite = imageOn;
+				arrayButton[i].text.text = (temp+ 1).ToString();
+			}
+		}
+	}
+	public void efectClick()
+	{
+		iTween.MoveTo(line1, iTween.Hash("x", line1.transform.position.x - Screen.width,"time", 0.5, "EaseType", "linear"));
+		iTween.MoveTo(line2, iTween.Hash("x", line2.transform.position.x + Screen.width,"time", 0.5, "EaseType", "linear"));
+		iTween.MoveTo(line3, iTween.Hash("x", line3.transform.position.x - Screen.width,"time", 0.5, "EaseType", "linear"));
+		iTween.MoveTo(line4, iTween.Hash("x", line4.transform.position.x + Screen.width,"time", 0.5, "EaseType", "linear"));
+        iTween.MoveTo(line5, iTween.Hash("x", line5.transform.position.x - Screen.width, "time", 0.5, "EaseType", "linear", "oncomplete", "selectLevelClickCompleted"));
+		iTween.ValueTo(this.gameObject,iTween.Hash("from",0,"to",1,"time",0.5f,"onupdate","onUpdateValue"));
+	}
+	public void onUpdateValue(float a)
+	{
+		color.a = a;
+		colorFadeEfect.color = color;
+
+	//	Debug.Log (a);
+	}
+		            
+	public void efectChangePage()
+	{
+		iTween.MoveTo(line1, iTween.Hash("x", line1.transform.position.x - Screen.width,"time", 0.5, "EaseType", "linear"));
+		iTween.MoveTo(line2, iTween.Hash("x", line2.transform.position.x + Screen.width,"time", 0.5, "EaseType", "linear"));
+		iTween.MoveTo(line3, iTween.Hash("x", line3.transform.position.x - Screen.width,"time", 0.5, "EaseType", "linear"));
+		iTween.MoveTo(line4, iTween.Hash("x", line4.transform.position.x + Screen.width,"time", 0.5, "EaseType", "linear"));
+		iTween.MoveTo(line5, iTween.Hash("x", line5.transform.position.x - Screen.width,"time", 0.5, "EaseType", "linear","oncomplete","selectLevelChangePageCompleted"));
+		
+	}
+
 	// Update is called once per frame
 	void Update () {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Application.LoadLevel("SceneMainMenu");
         }
+
+
 	}
-    void OnGUI()
+	public void ButtonLeftPage()
     {
-
-        GUIStyle myStyle;
-        myStyle =  guiSkinLabel.GetStyle("Label");
-        GUI.skin = guiSkinLabel; 
-       // myStyle.font.
-        myStyle.normal.textColor = Color.yellow;
-     //   GUI.Label(new Rect(Screen.width / 2 - 800 / 2 * DEF.scaleX, 20 * DEF.scaleY, 800 * DEF.scaleX, 60 * DEF.scaleY), "SELECT LEVEL", myStyle);
-
-       // myStyle.normal.textColor = Color.white;
-     //   GUI.Label(new Rect(0, 950 * DEF.scaleY,Screen.width, 60 * DEF.scaleY),(mcurrentPage+ 1) +" /" + MAX_PAGE, myStyle);
-     //   GUI.skin = guiSkinPre;
-      //  if (GUI.Button(new Rect(150 * DEF.scaleX, 920 * DEF.scaleY, WIDTH, HEIGHT), " "))
-        {
-     //       DEF.playSounBack(this);
-            mcurrentPage--;
-            if (mcurrentPage < 0)
-                mcurrentPage = MAX_PAGE - 1;
-        }
-
-        GUI.skin = guiSkinNext;
-    //    if (GUI.Button(new Rect(500 * DEF.scaleX, 920 * DEF.scaleY, WIDTH, HEIGHT), " "))
-        {
-     //       DEF.playSounBack(this);
-            mcurrentPage++;
-            if (mcurrentPage >= MAX_PAGE)
-                mcurrentPage = 0;
-        }
-
-
-        GUI.skin = guiSkinSelectLevelBack;
-     //   if (GUI.Button(new Rect(Screen.width - 140 * DEF.scaleX, 0, 140 * DEF.scaleX, 140 * DEF.scaleY), ""))
-        {
-    //        DEF.playSounBack(this);
-            Application.LoadLevel("SceneMainMenu");
-        }
-
-       
-        for(int i = 0;i<MAX_ROW;i++)
-        {
-            for(int j = 0;j<MAX_COL;j++)
-            {
-
-                if (mcurrentPage * MAX_COL * MAX_ROW + i * MAX_COL + j <= GamePlay.mUnlocklevel)
-                {
-                    GUI.skin = guiSkinSelectLevelNormal;
-                    if (GUI.Button(new Rect(START_X + j * (WIDTH + SPACING), START_Y + i * (HEIGHT + SPACING/2), WIDTH, HEIGHT), "" + (mcurrentPage*MAX_COL*MAX_ROW+ i * MAX_COL + j + 1)))
-                    {
-        //                DEF.playSounBack(this);
-                        GamePlay.mcurrentlevel = mcurrentPage * MAX_COL * MAX_ROW + i * MAX_COL + j;
-                        //Application.LoadLevel("SceneHint");
-                        Application.LoadLevel("SceneGamePlay");
-
-                    }
-                }
-                else
-                {
-                        GUI.skin = guiSkinSelectLevelDIsable;
-                        GUI.Button(new Rect(START_X + j * (WIDTH + SPACING), START_Y + i * (HEIGHT + SPACING / 4), WIDTH, HEIGHT), "" + (mcurrentPage * MAX_COL * MAX_ROW + i * MAX_COL + j + 1));
-                }
-              
-          
-            }
-        }
-
-        
+        SoundEngine.instance.PlayOneShot(SoundEngine.instance._soundclick);
+		mcurrentPage -= 1;
+		efectChangePage ();
+	}
+	public void ButtonRightPage()
+    {
+        SoundEngine.instance.PlayOneShot(SoundEngine.instance._soundclick);
+		mcurrentPage += 1;
+		efectChangePage ();
+	}
+    public void ButtonBackMainmenu()
+    {
+        SoundEngine.instance.PlayOneShot(SoundEngine.instance._soundclick);
+        Application.LoadLevel("SceneMainMenu");
     }
 }

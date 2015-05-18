@@ -15,34 +15,78 @@ public class Button : MonoBehaviour {
     public void ButtonLeft()
     {
        // isCompleted = false;
-       // DEF.playSounBack(this);
+        SoundEngine.instance.PlayOneShot(SoundEngine.instance._soundclick);
         GamePlay.mcurrentlevel--;
-        // Application.LoadLevel("SceneHint");
+        if (GamePlay.mcurrentlevel < 0)
+            GamePlay.mcurrentlevel = 99;
+         
        GamePlay.instance.PlayGame();
     }
     public void ButtonRight()
     {
         // isCompleted = false;
-        // DEF.playSounBack(this);
+        SoundEngine.instance.PlayOneShot(SoundEngine.instance._soundclick);
         GamePlay.mcurrentlevel++;
+        if (GamePlay.mcurrentlevel >= 100)
+            GamePlay.mcurrentlevel = 0;       
         // Application.LoadLevel("SceneHint");
         GamePlay.instance.PlayGame();
     }
     public void ButtonReset()
     {
-        // isCompleted = false;
-        // DEF.playSounBack(this);
-        //GameEngine.mcurrentlevel++;
-        // Application.LoadLevel("SceneHint");
+        SoundEngine.instance.PlayOneShot(SoundEngine.instance._soundclick);
         GamePlay.instance.PlayGame();
     }
     public void ButtonUndo()
     {
+        SoundEngine.instance.PlayOneShot(SoundEngine.instance._soundclick);
         Undo.instance.UndoAStep();
-        // isCompleted = false;
-        // DEF.playSounBack(this);
-        //GameEngine.mcurrentlevel++;
-        // Application.LoadLevel("SceneHint");
-      //  GamePlay.instance.PlayGame();
+        
+    }
+	public void ButtonPlayClassic()
+    {
+        ScriptMainMenu.instance.effectEnd();
+        SoundEngine.instance.PlayOneShot(SoundEngine.instance._soundclick);
+		GamePlay.GameMode = 0;
+		//Application.LoadLevel("SceneSelectLevel");
+
+	}
+	public void ButtonPlayExtra()
+	{
+        ScriptMainMenu.instance.effectEnd();
+        SoundEngine.instance.PlayOneShot(SoundEngine.instance._soundclick);
+		GamePlay.GameMode = 1;
+		//Application.LoadLevel("SceneSelectLevel");
+
+	}
+
+    public void ButtonMainmenu()
+    {
+        SoundEngine.instance.PlayOneShot(SoundEngine.instance._soundclick);
+        Application.LoadLevel("SceneMainMenu");
+    }
+    public void ButtonSound()
+    {
+        //SoundEngine.instance.PlayOneShot(SoundEngine.instance._soundclick);
+    }
+    public void ButtonRate()
+    {
+        SoundEngine.instance.PlayOneShot(SoundEngine.instance._soundclick);
+#if UNITY_ANDROID
+            Application.OpenURL("market://details?id=com.bubbleshoot2.free");	
+            
+#elif UNITY_WP8
+        WP8Statics.RateApp("");
+#elif UNITY_IOS
+        Application.OpenURL("https://itunes.apple.com/us/app/bubble-shoot-free/id914220826?ls=1&mt=8");	
+        
+         //   IOsStatic.ShowAds(" ", " ");#endif
+        	
+#endif	
+    }
+    public void ButtonQuit()
+    {
+        Application.Quit();
+    //    Application.LoadLevel("SceneMainMenu");
     }
 }

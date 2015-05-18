@@ -148,20 +148,38 @@ public class ActorItem : MonoBehaviour
             break;
 		}
 	}
-	void Movecompleted()
-	{
-		state = STATE_IDE;
-		Debug.Log ("Completed MOve");
-        if (GamePlay.instance.mapArrayDisable [currentRow][currentCol] != null&& value == GamePlay.instance.mapArrayDisable [currentRow][currentCol].value - 5)
+    void Movecompleted()
+    {
+        
+        state = STATE_IDE;
+        Debug.Log("Completed MOve");
+        if (GamePlay.instance.mapArrayDisable[currentRow][currentCol] != null && value == GamePlay.instance.mapArrayDisable[currentRow][currentCol].value - 5)
         {
+            SoundEngine.instance.PlayOneShot(SoundEngine.instance._soundpair);
             GamePlay.instance.mapArrayDisable[currentRow][currentCol].gameObjectFlag.SetActive(true);
         }
-        if(GamePlay.instance.checkWin())
+        if (GamePlay.instance.checkWin())
         {
-       //     Debug.Log("Completed");
+            //     Debug.Log("Completed");
+            SoundEngine.instance.PlayOneShot(SoundEngine.instance._soundWin);
+            GamePlay.instance.textLevelCompleted.text = "Level " + (GamePlay.mcurrentlevel + 1).ToString();
+            GamePlay.isCompleted = true;
             UIEffect.instance.showCOmpleted();
+            if (GamePlay.GameMode == 0)
+            {
+                if (GamePlay.mcurrentlevel + 1 > DEF_.ScoreModeClassic.NUM)
+                    DEF_.ScoreModeClassic.NUM++;
+                DEF_.ScoreModeClassic.Save();
+            }
+            else
+            {
+                if (GamePlay.mcurrentlevel + 1 > DEF_.ScoreModeExtra.NUM)
+                    DEF_.ScoreModeExtra.NUM++;
+                DEF_.ScoreModeExtra.Save();
+            }
+            ScriptMainMenu.ShowADS();
         }
-	}
+    }
 
 	public void Start () {
 	

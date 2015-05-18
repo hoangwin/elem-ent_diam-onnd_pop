@@ -66,10 +66,7 @@ public class Undo : MonoBehaviour {
 
             ActorItem objActorItem = GamePlay.instance.mapArray[row1][col1];
 
-        // lay toa do luc dau
-            float x = GamePlay.BEGIN_X + objActorItem.currentCol * GamePlay.ITEM_WIDTH + GamePlay.ITEM_WIDTH / 2; ;
-            float y = GamePlay.BEGIN_Y + objActorItem.currentRow * GamePlay.ITEM_WIDTH + GamePlay.ITEM_HEIGHT / 2; ;
-
+        
 
             objActorItem.state = ActorItem.STATE_IDE;
 

@@ -21,17 +21,17 @@ public class UIEffect : MonoBehaviour {
         UIEffect.instance.uiCompleted.gameObject.SetActive(true);
         UIEffect.instance.uiCompleted.position = new Vector3(Screen.width / 2, Screen.height / 2, UIEffect.instance.uiCompleted.position.z);
         iTween.MoveFrom(UIEffect.instance.uiCompleted.gameObject, iTween.Hash("y", 3 * Screen.height / 2, "time", 1, "EaseType", "linear"));//"oncomplete", "Movecompleted"
-        iTween.RotateTo(UIEffect.instance.uiStarEffect.gameObject, iTween.Hash("rotation", new Vector3(0, 00, 500), "easetype", iTween.EaseType.linear, "time", 3.3f));
+        iTween.RotateTo(UIEffect.instance.uiStarEffect.gameObject, iTween.Hash("rotation", new Vector3(0, 00, 900), "easetype", iTween.EaseType.linear, "time", 7.0f));
+		GamePlay.timer = 0;
     }
     public void movehideCompleted()
     {
         
         UIEffect.instance.uiCompleted.position = new Vector3(Screen.width / 2, Screen.height / 2, UIEffect.instance.uiCompleted.position.z);
-        iTween.MoveFrom(UIEffect.instance.uiCompleted.gameObject, iTween.Hash("y", 3 * Screen.height / 2, "time", 1, "EaseType", "linear"));//"oncomplete", "Movecompleted"
-        iTween.RotateTo(UIEffect.instance.uiStarEffect.gameObject, iTween.Hash("rotation", new Vector3(0, 00, 500), "easetype", iTween.EaseType.linear, "time", 3.3f));
+		iTween.MoveTo(UIEffect.instance.uiCompleted.gameObject, iTween.Hash("x", 2 * Screen.width , "time", 1, "EaseType", "linear","oncomplete", "hideCompleted"));//"oncomplete", "Movecompleted"
+		GamePlay.mcurrentlevel++;
+		GamePlay.instance.PlayGame();
+     //   iTween.RotateTo(UIEffect.instance.uiStarEffect.gameObject, iTween.Hash("rotation", new Vector3(0, 00, 500), "easetype", iTween.EaseType.linear, "time", 3.3f));
     }
-    public void hideCompleted()
-    {
-        UIEffect.instance.uiCompleted.gameObject.SetActive(false);
-    }
+   
 }
