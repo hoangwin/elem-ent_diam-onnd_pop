@@ -9,7 +9,24 @@ public class ScriptMainMenu : MonoBehaviour
     public GameObject line2;
     public GameObject line3;
     public GameObject line4;
+
     public static ScriptMainMenu instance;
+
+    public static ScriptMainMenu Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                GameObject obj = new GameObject();
+                obj.name = "ScriptMainMenu";
+                DontDestroyOnLoad(obj);
+                instance = obj.AddComponent<ScriptMainMenu>();
+            }
+            return Instance;
+        }
+    }
+
     void Start()
     {
 		DEF_.initAndLoadScore ();

@@ -168,13 +168,13 @@ public class ActorItem : MonoBehaviour
             if (GamePlay.GameMode == 0)
             {
                 if (GamePlay.mcurrentlevel + 1 > DEF_.ScoreModeClassic.NUM)
-                    DEF_.ScoreModeClassic.NUM++;
+                    DEF_.ScoreModeClassic.NUM = GamePlay.mcurrentlevel + 1;
                 DEF_.ScoreModeClassic.Save();
             }
             else
             {
                 if (GamePlay.mcurrentlevel + 1 > DEF_.ScoreModeExtra.NUM)
-                    DEF_.ScoreModeExtra.NUM++;
+                    DEF_.ScoreModeExtra.NUM = GamePlay.mcurrentlevel + 1;
                 DEF_.ScoreModeExtra.Save();
             }
             ScriptMainMenu.ShowADS();

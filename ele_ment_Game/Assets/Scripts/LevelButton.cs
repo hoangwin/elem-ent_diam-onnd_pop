@@ -29,7 +29,7 @@ public class LevelButton : MonoBehaviour {
 			
 						ScriptSelectLevel.instance.colorFadeEfect.enabled = true;
 						ScriptSelectLevel.instance.color.a = (1);
-						GamePlay.mcurrentlevel = ScriptSelectLevel.mcurrentPage * 20 + index;
+						GamePlay.mcurrentlevel = index;
 						ScriptSelectLevel.instance.efectClick ();
 				}
 		//Application.LoadLevel("SceneGamePlay");
