@@ -94,21 +94,22 @@ public class ActorItem : MonoBehaviour
                 spriteRenderer.sprite = GamePlay.instance.FlagSprite;
                 spriteRenderer.sortingOrder = 0;
         }
-        else if (value > 0 && value < 6)//0 = buc tuong amc dinh
+        else if (value > 0 && value < 11)//0 = buc tuong amc dinh
         {
+            
             spriteRenderer.sprite = GamePlay.instance.ItemSpriteEnable[value - 1];
             spriteRenderer.sortingOrder = 2;
         }
-        else if (value > 0 && value <= 10)
+        else if (value > 10 && value <= 20)
         {
-//            Debug.Log(value - 5 - 1);
-			spriteRenderer.sprite = GamePlay.instance.ItemSpriteDisable[value - 5 - 1];
+            Debug.Log(value - 10 - 1);
+			spriteRenderer.sprite = GamePlay.instance.ItemSpriteDisable[value - 10 - 1];
 			
         }
-        else if (value > 10 && value <= 15)
+        else if (value > 20 && value <= 30)
         {
             //            Debug.Log(value - 5 - 1);
-            spriteRenderer.sprite = GamePlay.instance.LineSprite[value - 10];
+            spriteRenderer.sprite = GamePlay.instance.LineSprite[value - 20];
             spriteRenderer.sortingOrder = 1;
         }
     }
@@ -153,7 +154,7 @@ public class ActorItem : MonoBehaviour
         
         state = STATE_IDE;
         Debug.Log("Completed MOve");
-        if (GamePlay.instance.mapArrayDisable[currentRow][currentCol] != null && value == GamePlay.instance.mapArrayDisable[currentRow][currentCol].value - 5)
+        if (GamePlay.instance.mapArrayDisable[currentRow][currentCol] != null && value == GamePlay.instance.mapArrayDisable[currentRow][currentCol].value - 10)
         {
             SoundEngine.instance.PlayOneShot(SoundEngine.instance._soundpair);
             GamePlay.instance.mapArrayDisable[currentRow][currentCol].gameObjectFlag.SetActive(true);

@@ -1,5 +1,7 @@
 fileFormatVersion: 2
-guid: 8b8e245bfaf9fef4ab303ca7e2326b87
+guid: 5c33224be97a82e4b9c7111fa904fc7f
+timeCreated: 1432123472
+licenseType: Free
 TextureImporter:
   fileIDToRecycleName: {}
   serializedVersion: 2
@@ -24,8 +26,8 @@ TextureImporter:
   cubemapConvolutionSteps: 8
   cubemapConvolutionExponent: 1.5
   seamlessCubemap: 0
-  textureFormat: -3
-  maxTextureSize: 1024
+  textureFormat: -1
+  maxTextureSize: 2048
   textureSettings:
     filterMode: -1
     aniso: 16
@@ -45,8 +47,8 @@ TextureImporter:
   alphaIsTransparency: 1
   textureType: 8
   buildTargetSettings:
-  - buildTarget: Android
-    maxTextureSize: 128
+  - buildTarget: WP8
+    maxTextureSize: 256
     textureFormat: -3
     compressionQuality: 50
   spriteSheet:
