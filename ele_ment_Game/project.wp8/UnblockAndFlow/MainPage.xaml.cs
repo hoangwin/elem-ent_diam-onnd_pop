@@ -23,7 +23,7 @@ using System.Windows.Media.Imaging;
 using vservWindowsPhone;//Full Ads
 using InMobi.WP.AdSDK;
 using GoogleAds;
-namespace FruitCrushFree
+namespace UnblockAndFlow
 {
 	public partial class MainPage : PhoneApplicationPage
 	{
@@ -50,7 +50,7 @@ namespace FruitCrushFree
             isShowAds = 1;
             if (isShowAds == 1)
             {
-			//	showAdmobBanner();
+				showAdmobBanner();
                // AdmobFullAdsShow();
 			   //VservAdControl VMB = VservAdControl.Instance; //full ads
                //VMB.DisplayAd("xxxxxx", LayoutRoot);  //n_m_hoang
@@ -144,7 +144,7 @@ namespace FruitCrushFree
         {
           //  if (interstitialAd == null)
             {
-                interstitialAd = new InterstitialAd("ca-app-pub-6844968633010430/3438515909");//mobilewp8
+                interstitialAd = new InterstitialAd("ca-app-pub-6844968633010430/1143440307");//mobilewp8
                 interstitialAd.ReceivedAd += OnAdReceivedFull;
                 interstitialAd.FailedToReceiveAd += OnFailedToReceiveAdFull;
             }            
@@ -158,7 +158,7 @@ namespace FruitCrushFree
                 bannerAd = new AdView
                 {
                     Format = AdFormats.Banner,
-                    AdUnitID = "xxxxx"
+                    AdUnitID = "ca-app-pub-6844968633010430/8666707103"
                 };
 
                 bannerAd.FailedToReceiveAd += OnFailedToReceiveAd;
