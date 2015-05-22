@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnblockAndFlow", "UnblockAndFlow\UnblockAndFlow.csproj", "{0D08C445-E0FE-4B00-BB6D-28E2DB9A0D8E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|ARM = Debug|ARM
+		Debug|x86 = Debug|x86
+		Master|ARM = Master|ARM
+		Master|x86 = Master|x86
+		Release|ARM = Release|ARM
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0D08C445-E0FE-4B00-BB6D-28E2DB9A0D8E}.Debug|ARM.ActiveCfg = Debug|ARM
+		{0D08C445-E0FE-4B00-BB6D-28E2DB9A0D8E}.Debug|ARM.Build.0 = Debug|ARM
+		{0D08C445-E0FE-4B00-BB6D-28E2DB9A0D8E}.Debug|ARM.Deploy.0 = Debug|ARM
+		{0D08C445-E0FE-4B00-BB6D-28E2DB9A0D8E}.Debug|x86.ActiveCfg = Debug|x86
+		{0D08C445-E0FE-4B00-BB6D-28E2DB9A0D8E}.Debug|x86.Build.0 = Debug|x86
+		{0D08C445-E0FE-4B00-BB6D-28E2DB9A0D8E}.Debug|x86.Deploy.0 = Debug|x86
+		{0D08C445-E0FE-4B00-BB6D-28E2DB9A0D8E}.Master|ARM.ActiveCfg = Master|ARM
+		{0D08C445-E0FE-4B00-BB6D-28E2DB9A0D8E}.Master|ARM.Build.0 = Master|ARM
+		{0D08C445-E0FE-4B00-BB6D-28E2DB9A0D8E}.Master|ARM.Deploy.0 = Master|ARM
+		{0D08C445-E0FE-4B00-BB6D-28E2DB9A0D8E}.Master|x86.ActiveCfg = Master|x86
+		{0D08C445-E0FE-4B00-BB6D-28E2DB9A0D8E}.Master|x86.Build.0 = Master|x86
+		{0D08C445-E0FE-4B00-BB6D-28E2DB9A0D8E}.Master|x86.Deploy.0 = Master|x86
+		{0D08C445-E0FE-4B00-BB6D-28E2DB9A0D8E}.Release|ARM.ActiveCfg = Release|ARM
+		{0D08C445-E0FE-4B00-BB6D-28E2DB9A0D8E}.Release|ARM.Build.0 = Release|ARM
+		{0D08C445-E0FE-4B00-BB6D-28E2DB9A0D8E}.Release|ARM.Deploy.0 = Release|ARM
+		{0D08C445-E0FE-4B00-BB6D-28E2DB9A0D8E}.Release|x86.ActiveCfg = Release|x86
+		{0D08C445-E0FE-4B00-BB6D-28E2DB9A0D8E}.Release|x86.Build.0 = Release|x86
+		{0D08C445-E0FE-4B00-BB6D-28E2DB9A0D8E}.Release|x86.Deploy.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
