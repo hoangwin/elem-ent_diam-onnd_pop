@@ -1128,7 +1128,7 @@ public abstract class AutoSpriteBase : SpriteBase, ISpriteAggregator, ISpritePac
 				// from an associated manager:
 				if (manager != null)
 				{
-					return manager.renderer.sharedMaterial;
+					return manager.GetComponent<Renderer>().sharedMaterial;
 				}
 				else // Else, no manager associated!:
 				{
@@ -1139,14 +1139,14 @@ public abstract class AutoSpriteBase : SpriteBase, ISpriteAggregator, ISpritePac
 			else // Else get the material from the sprite's renderer
 			{	 // as this is probably a prefab and that's why it
 				// doesn't have a mesh:
-				return renderer.sharedMaterial;
+				return GetComponent<Renderer>().sharedMaterial;
 			}
 		}
 		else if (managed)
 		{
 			if (manager != null)
 			{
-				return manager.renderer.sharedMaterial;
+				return manager.GetComponent<Renderer>().sharedMaterial;
 			}
 			else // Else, no manager associated!:
 			{

@@ -136,7 +136,7 @@ public class SpriteSizer : ScriptableWizard
 		FindSprites();
 
 
-		if (renderCamera.isOrthoGraphic)
+		if (renderCamera.orthographic)
 		{
 			// Use orthographic logic:
 			worldUnitsPerScreenPixel = (renderCamera.orthographicSize * 2f) / targetScreenHeight;

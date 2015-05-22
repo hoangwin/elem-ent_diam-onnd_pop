@@ -1027,7 +1027,7 @@ public abstract class SpriteRoot : MonoBehaviour, IEZLinkedListItem<ISpriteAnima
 				((SpriteMesh)m_spriteMesh).material = s.spriteMesh.material;
 			else if (!s.managed)
 			{
-				renderer.sharedMaterial = s.renderer.sharedMaterial;
+				GetComponent<Renderer>().sharedMaterial = s.GetComponent<Renderer>().sharedMaterial;
 			}
 		}
 
@@ -1045,7 +1045,7 @@ public abstract class SpriteRoot : MonoBehaviour, IEZLinkedListItem<ISpriteAnima
 				SetPixelToUV(m_spriteMesh.texture);
 			else if (!managed)
 			{
-				((SpriteMesh)m_spriteMesh).material = renderer.sharedMaterial;
+				((SpriteMesh)m_spriteMesh).material = GetComponent<Renderer>().sharedMaterial;
 				SetPixelToUV(m_spriteMesh.texture);
 			}
 		}
@@ -1761,8 +1761,8 @@ public abstract class SpriteRoot : MonoBehaviour, IEZLinkedListItem<ISpriteAnima
 		}
 		else
 		{
-			if (renderer != null && renderer.sharedMaterial != null && renderer.sharedMaterial.mainTexture != null)
-				SetPixelToUV(renderer.sharedMaterial.mainTexture);
+			if (GetComponent<Renderer>() != null && GetComponent<Renderer>().sharedMaterial != null && GetComponent<Renderer>().sharedMaterial.mainTexture != null)
+				SetPixelToUV(GetComponent<Renderer>().sharedMaterial.mainTexture);
 		}
 	}
 
@@ -1774,10 +1774,10 @@ public abstract class SpriteRoot : MonoBehaviour, IEZLinkedListItem<ISpriteAnima
 	/// <param name="tex">The new texture.</param>
 	public void SetTexture(Texture2D tex)
 	{
-		if (managed || renderer == null)
+		if (managed || GetComponent<Renderer>() == null)
 			return;
 
-		renderer.material.mainTexture = tex;
+		GetComponent<Renderer>().material.mainTexture = tex;
 
 		SetPixelToUV(tex);
 
@@ -1792,10 +1792,10 @@ public abstract class SpriteRoot : MonoBehaviour, IEZLinkedListItem<ISpriteAnima
 	/// <param name="mat">The new material.</param>
 	public void SetMaterial(Material mat)
 	{
-		if (managed || renderer == null)
+		if (managed || GetComponent<Renderer>() == null)
 			return;
 
-		renderer.sharedMaterial = mat;
+		GetComponent<Renderer>().sharedMaterial = mat;
 
 		SetPixelToUV(mat.mainTexture);
 
@@ -2001,12 +2001,12 @@ public abstract class SpriteRoot : MonoBehaviour, IEZLinkedListItem<ISpriteAnima
 			m_spriteMesh.sprite = null;
 		m_spriteMesh = null;
 		// Destroy our unneeded components:
-		if (renderer != null)
+		if (GetComponent<Renderer>() != null)
 		{
 			if (Application.isPlaying)
-				Destroy(renderer);
+				Destroy(GetComponent<Renderer>());
 			else
-				DestroyImmediate(renderer);
+				DestroyImmediate(GetComponent<Renderer>());
 		}
 		Object filter = gameObject.GetComponent(typeof(MeshFilter));
 		if (filter != null)

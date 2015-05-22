@@ -53,7 +53,7 @@ public class DEF : MonoBehaviour
         if (SounBack != null)
         {
            // Debug.Log("Play Sound");
-            SounBack.audio.Play();
+            SounBack.GetComponent<AudioSource>().Play();
         }
     }
     
@@ -76,7 +76,7 @@ public class DEF : MonoBehaviour
         if (SounBack != null)
         {
             // Debug.Log("Play Sound");
-            SounBack.audio.Play();
+            SounBack.GetComponent<AudioSource>().Play();
         }
     }
     public static void playSound(string str)
@@ -87,7 +87,7 @@ public class DEF : MonoBehaviour
         if (SounBack != null)
         {
             // Debug.Log("Play Sound");
-            SounBack.audio.Play();
+            SounBack.GetComponent<AudioSource>().Play();
         }
     }
 }
