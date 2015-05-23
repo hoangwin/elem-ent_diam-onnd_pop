@@ -92,11 +92,11 @@ public class Button : MonoBehaviour {
 #elif UNITY_WP8
         WP8Statics.RateApp("");
 #elif UNITY_IOS
-        Application.OpenURL("https://itunes.apple.com/us/app/bubble-shoot-free/id914220826?ls=1&mt=8");	
+        Application.OpenURL("https://itunes.apple.com/us/app/unblock-and-flow/id998032737?ls=1&mt=8");	
         
          //   IOsStatic.ShowAds(" ", " ");#endif
         	
-#endif	
+#endif
     }
     public void ButtonQuit()
     {

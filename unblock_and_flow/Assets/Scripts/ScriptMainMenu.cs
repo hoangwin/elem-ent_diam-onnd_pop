@@ -53,7 +53,7 @@ public class ScriptMainMenu : MonoBehaviour
             firstShowAds = true;
             timeShowAds = 0;
 #if UNITY_ANDROID
-            using (AndroidJavaClass jc = new AndroidJavaClass("com.bubbleshoot2.free.UnityPlayerNativeActivity"))
+            using (AndroidJavaClass jc = new AndroidJavaClass("com.unblock.flow.game.UnityPlayerNativeActivity"))
             {
                 jc.CallStatic<int>("ShowAds");
             }
