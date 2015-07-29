@@ -34,6 +34,7 @@
 #import "GoogleMobileAds/GADBannerView.h"//here
 #import "iAd/ADBannerView.h"
 
+// ios version determination
 bool	_ios42orNewer			= false;
 bool	_ios43orNewer			= false;
 bool	_ios50orNewer			= false;
@@ -251,7 +252,7 @@ extern "C" {//here
 
 	[self showGameUI];
 //rem here for banner	[self showiAd];//here
-	[self showAdmob];//here
+//	[self showAdmob];//here
 	[self createDisplayLink];
 
 	UnitySetPlayerFocus(1);
@@ -373,6 +374,13 @@ extern "C" {//here
 {
 	::printf("-> applicationDidBecomeActive()\n");
 
+	if(_snapshotView)
+	{
+		[_snapshotView removeFromSuperview];
+		_snapshotView = nil;
+		[_window bringSubviewToFront:_rootView];
+	}
+
 	if(_unityAppReady)
 	{
 		if(UnityIsPaused())
@@ -402,18 +410,22 @@ extern "C" {//here
 
 		// do pause unity only if we dont need special background processing
 		// otherwise batched player loop can be called to run user scripts
-
 		int bgBehavior = UnityGetAppBackgroundBehavior();
 		if(bgBehavior == appbgSuspend || bgBehavior == appbgExit)
 		{
+			// Force player to do one more frame, so scripts get a chance to render custom screen for minimized app in task manager.
+			// NB: UnityWillPause will schedule OnApplicationPause message, which will be sent normally inside repaint (unity player loop)
+			// NB: We will actually pause after the loop (when calling UnityPause).
 			UnityWillPause();
-
-			// Force player to do one more frame, so scripts get a chance to render custom screen for
-			// minimized app in task manager.
-			UnityPlayerLoop();
-			[self repaintDisplayLink];
-
+			[self repaint];
 			UnityPause(1);
+
+			_snapshotView = [self createSnapshotView];
+			if(_snapshotView)
+			{
+				[_window addSubview:_snapshotView];
+				[_window bringSubviewToFront:_snapshotView];
+			}
 		}
 	}
 

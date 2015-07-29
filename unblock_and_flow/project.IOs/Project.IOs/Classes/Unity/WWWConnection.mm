@@ -255,7 +255,9 @@ extern "C" void* UnityStartWWWConnectionGet(void* udata, const void* headerDict,
 	NSMutableURLRequest* request =
 		[UnityWWWConnectionDelegate newRequestForHTTPMethod:@"GET" url:delegate.url headers:(__bridge NSDictionary*)headerDict];
 
-	delegate.connection = [NSURLConnection connectionWithRequest:request delegate:delegate];
+	dispatch_async(dispatch_get_main_queue(), ^{
+		delegate.connection = [NSURLConnection connectionWithRequest:request delegate:delegate];
+	});
 	return (__bridge_retained void*)delegate;
 }
 
@@ -268,7 +270,10 @@ extern "C" void* UnityStartWWWConnectionPost(void* udata, const void* headerDict
 	[request setHTTPBody:[NSData dataWithBytes:data length:length]];
 	[request setValue:[NSString stringWithFormat:@"%d", length] forHTTPHeaderField:@"Content-Length"];
 
-	delegate.connection = [NSURLConnection connectionWithRequest:request delegate:delegate];
+	dispatch_async(dispatch_get_main_queue(), ^{
+		delegate.connection = [NSURLConnection connectionWithRequest:request delegate:delegate];
+	});
+
 	return (__bridge_retained void*)delegate;
 }
 
