@@ -1,5 +1,6 @@
 
 #include "EAGLContextHelper.h"
+#include "UnityRendering.h"
 
 #import <QuartzCore/QuartzCore.h>
 #import <OpenGLES/EAGL.h>
@@ -34,6 +35,14 @@ extern "C" EAGLContext* UnityGetCurrentContextEAGL()
 EAGLContextSetCurrentAutoRestore::EAGLContextSetCurrentAutoRestore(EAGLContext* cur_)
   : old([EAGLContext currentContext]),
 	cur(cur_)
+{
+	if (old != cur)
+		[EAGLContext setCurrentContext:cur];
+}
+
+EAGLContextSetCurrentAutoRestore::EAGLContextSetCurrentAutoRestore(UnityDisplaySurfaceBase* surface)
+  : old(surface->api == apiMetal ? nil : [EAGLContext currentContext]),
+	cur(surface->api == apiMetal ? nil : ((UnityDisplaySurfaceGLES*)surface)->context)
 {
 	if (old != cur)
 		[EAGLContext setCurrentContext:cur];

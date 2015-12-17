@@ -178,6 +178,10 @@ extern "C" int UnityDeviceGeneration()
 			_DeviceGeneration = deviceiPhone6;
 		else if (!strncmp(model, "iPhone7,1",9))
 			_DeviceGeneration = deviceiPhone6Plus;
+		else if (!strncmp(model, "iPhone8,1",9))
+			_DeviceGeneration = deviceiPhone6S;
+		else if (!strncmp(model, "iPhone8,2",9))
+			_DeviceGeneration = deviceiPhone6SPlus;
 		else if (!strcmp(model, "iPod4,1"))
 			_DeviceGeneration = deviceiPodTouch4Gen;
 		else if (!strncmp(model, "iPod5,",6))
@@ -208,6 +212,14 @@ extern "C" int UnityDeviceGeneration()
 		{
 			int rev = atoi(model+6);
 			if(rev >= 3)	_DeviceGeneration = deviceiPadAir2;
+		}
+		else if (!strncmp(model, "iPad6,", 6))
+		{
+			int rev = atoi(model+6);
+			if (rev == 7 || rev == 8)
+				_DeviceGeneration = deviceiPadPro1Gen;
+			else if (rev == 3 || rev == 4)
+				_DeviceGeneration = deviceiPadMini4Gen;
 		}
 
 		// completely unknown hw - just determine form-factor
@@ -243,8 +255,10 @@ extern "C" float UnityDeviceDPI()
 			case deviceiPhone5C:
 			case deviceiPhone5S:
 			case deviceiPhone6:
+			case deviceiPhone6S:
 				_DeviceDPI = 326.0f; break;
 			case deviceiPhone6Plus:
+			case deviceiPhone6SPlus:
 				_DeviceDPI = 401.0f; break;
 
 			// iPad
@@ -254,6 +268,7 @@ extern "C" float UnityDeviceDPI()
 			case deviceiPad4Gen:        // iPad retina
 			case deviceiPadAir1:
 			case deviceiPadAir2:
+			case deviceiPadPro1Gen:
 				_DeviceDPI = 264.0f; break;
 
 			// iPad mini
@@ -261,6 +276,7 @@ extern "C" float UnityDeviceDPI()
 				_DeviceDPI = 163.0f; break;
 			case deviceiPadMini2Gen:
 			case deviceiPadMini3Gen:
+			case deviceiPadMini4Gen:
 				_DeviceDPI = 326.0f; break;
 
 			// iPod
@@ -335,53 +351,3 @@ extern "C" const char* UnityDeviceUniqueIdentifier()
 		return strdup(uid_str);
 	}
 #endif
-
-
-// target resolution selector for "auto" values
-
-extern "C" void QueryTargetResolution(int* targetW, int* targetH)
-{
-	enum
-	{
-		kTargetResolutionNative = 0,
-		kTargetResolutionAutoPerformance = 3,
-		kTargetResolutionAutoQuality = 4,
-		kTargetResolution320p = 5,
-		kTargetResolution640p = 6,
-		kTargetResolution768p = 7
-	};
-
-
-	int targetRes = UnityGetTargetResolution();
-
-	float resMult = 1.0f;
-	if(targetRes == kTargetResolutionAutoPerformance)
-	{
-		switch(UnityDeviceGeneration())
-		{
-			case deviceiPhone4:		resMult = 0.6f;		break;
-			default:				resMult = 0.75f;	break;
-		}
-	}
-
-	if(targetRes == kTargetResolutionAutoQuality)
-	{
-		switch(UnityDeviceGeneration())
-		{
-			case deviceiPhone4:		resMult = 0.8f;		break;
-			default:				resMult = 1.0f;		break;
-		}
-	}
-
-	switch(targetRes)
-	{
-		case kTargetResolution320p:	*targetW = 320;	*targetH = 480;		break;
-		case kTargetResolution640p:	*targetW = 640;	*targetH = 960;		break;
-		case kTargetResolution768p:	*targetW = 768;	*targetH = 1024;	break;
-
-		default:
-			*targetW = GetMainDisplay().screenSize.width * resMult;
-			*targetH = GetMainDisplay().screenSize.height * resMult;
-			break;
-	}
-}

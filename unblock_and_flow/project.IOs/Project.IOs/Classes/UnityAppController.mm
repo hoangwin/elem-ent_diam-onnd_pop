@@ -34,7 +34,6 @@
 #import "GoogleMobileAds/GADBannerView.h"//here
 #import "iAd/ADBannerView.h"
 
-// ios version determination
 bool	_ios42orNewer			= false;
 bool	_ios43orNewer			= false;
 bool	_ios50orNewer			= false;
@@ -43,6 +42,8 @@ bool	_ios70orNewer			= false;
 bool	_ios80orNewer			= false;
 bool	_ios81orNewer			= false;
 bool	_ios82orNewer			= false;
+bool 	_ios90orNewer			= false;
+bool 	_ios91orNewer			= false;
 
 // was unity rendering already inited: we should not touch rendering while this is false
 bool	_renderingInited		= false;
@@ -73,8 +74,11 @@ bool	_supportsMSAA			= false;
 @synthesize rootViewController		= _rootController;
 @synthesize mainDisplay				= _mainDisplay;
 @synthesize renderDelegate			= _renderDelegate;
+@synthesize quitHandler				= _quitHandler;
 
+#if !UNITY_TVOS
 @synthesize interfaceOrientation	= _curOrientation;
+#endif
 
 - (id)init
 {
@@ -258,6 +262,15 @@ extern "C" {//here
 	UnitySetPlayerFocus(1);
 }
 
+extern "C" void UnityRequestQuit()
+{
+	_didResignActive = true;
+	if (GetAppController().quitHandler)
+		GetAppController().quitHandler();
+	else
+		exit(0);
+}
+
 - (NSUInteger)application:(UIApplication*)application supportedInterfaceOrientationsForWindow:(UIWindow*)window
 {
 	// UIInterfaceOrientationMaskAll
@@ -271,11 +284,13 @@ extern "C" {//here
 		   | (1 << UIInterfaceOrientationLandscapeRight) | (1 << UIInterfaceOrientationLandscapeLeft);
 }
 
+#if !UNITY_TVOS
 - (void)application:(UIApplication*)application didReceiveLocalNotification:(UILocalNotification*)notification
 {
 	AppController_SendNotificationWithArg(kUnityDidReceiveLocalNotification, notification);
 	UnitySendLocalNotification(notification);
 }
+#endif
 
 - (void)application:(UIApplication*)application didReceiveRemoteNotification:(NSDictionary*)userInfo
 {
@@ -323,6 +338,7 @@ extern "C" {//here
 	::printf("-> applicationDidFinishLaunching()\n");
 
 	// send notfications
+#if !UNITY_TVOS
 	if(UILocalNotification* notification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey])
 		UnitySendLocalNotification(notification);
 
@@ -331,6 +347,7 @@ extern "C" {//here
 
 	if ([UIDevice currentDevice].generatesDeviceOrientationNotifications == NO)
 		[[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+#endif
 
 	UnityInitApplicationNoGraphics([[[NSBundle mainBundle] bundlePath] UTF8String]);
 
@@ -378,7 +395,6 @@ extern "C" {//here
 	{
 		[_snapshotView removeFromSuperview];
 		_snapshotView = nil;
-		[_window bringSubviewToFront:_rootView];
 	}
 
 	if(_unityAppReady)
@@ -422,10 +438,7 @@ extern "C" {//here
 
 			_snapshotView = [self createSnapshotView];
 			if(_snapshotView)
-			{
-				[_window addSubview:_snapshotView];
-				[_window bringSubviewToFront:_snapshotView];
-			}
+				[_rootView addSubview:_snapshotView];
 		}
 	}
 
@@ -498,6 +511,8 @@ void UnityInitTrampoline()
 	_ios80orNewer = [version compare: @"8.0" options: NSNumericSearch] != NSOrderedAscending;
 	_ios81orNewer = [version compare: @"8.1" options: NSNumericSearch] != NSOrderedAscending;
 	_ios82orNewer = [version compare: @"8.2" options: NSNumericSearch] != NSOrderedAscending;
+	_ios90orNewer = [version compare: @"9.0" options: NSNumericSearch] != NSOrderedAscending;
+	_ios91orNewer = [version compare: @"9.1" options: NSNumericSearch] != NSOrderedAscending;
 
 	// Try writing to console and if it fails switch to NSLog logging
 	::fprintf(stdout, "\n");

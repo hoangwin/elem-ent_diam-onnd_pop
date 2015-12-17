@@ -1,5 +1,7 @@
 
-#include "UnityViewControllerBase.h"
+#if UNITY_IOS
+
+#include "UnityViewControllerBaseiOS.h"
 #include "OrientationSupport.h"
 #include "Keyboard.h"
 #include "UnityView.h"
@@ -12,11 +14,12 @@
 #include <math.h>
 
 typedef id (*WillRotateToInterfaceOrientationSendFunc)(struct objc_super*, SEL, UIInterfaceOrientation, NSTimeInterval);
-typedef id (*DidRotateFromInterfaceOrientationSendFunc)(struct objc_super*, SEL, UIInterfaceOrientation);
-typedef id (*ViewWillTransitionToSizeSendFunc)(struct objc_super*, SEL, CGSize, id<UIViewControllerTransitionCoordinator>);
-
 static void WillRotateToInterfaceOrientation_DefaultImpl(id self_, SEL _cmd, UIInterfaceOrientation toInterfaceOrientation, NSTimeInterval duration);
+
+typedef id (*DidRotateFromInterfaceOrientationSendFunc)(struct objc_super*, SEL, UIInterfaceOrientation);
 static void DidRotateFromInterfaceOrientation_DefaultImpl(id self_, SEL _cmd, UIInterfaceOrientation fromInterfaceOrientation);
+
+typedef id (*ViewWillTransitionToSizeSendFunc)(struct objc_super*, SEL, CGSize, id<UIViewControllerTransitionCoordinator>);
 static void ViewWillTransitionToSize_DefaultImpl(id self_, SEL _cmd, CGSize size, id<UIViewControllerTransitionCoordinator> coordinator);
 
 
@@ -30,7 +33,7 @@ static void ViewWillTransitionToSize_DefaultImpl(id self_, SEL _cmd, CGSize size
 
 - (id)init
 {
-	if( (self = [super init]) )
+	if ((self = [super init]))
 		AddViewControllerDefaultRotationHandling([UnityViewControllerBase class]);
 
 	return self;
@@ -55,6 +58,7 @@ static void ViewWillTransitionToSize_DefaultImpl(id self_, SEL _cmd, CGSize size
 	}
 	return _PrefersStatusBarHidden;
 }
+
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
 	static UIStatusBarStyle _PreferredStatusBarStyle = UIStatusBarStyleDefault;
@@ -103,10 +107,12 @@ static void ViewWillTransitionToSize_DefaultImpl(id self_, SEL _cmd, CGSize size
 	NSAssert(UnityShouldAutorotate(), @"UnityDefaultViewController should be used only if unity is set to autorotate");
 
 	NSUInteger ret = 0;
+
 	if(UnityIsOrientationEnabled(portrait))				ret |= (1 << UIInterfaceOrientationPortrait);
 	if(UnityIsOrientationEnabled(portraitUpsideDown))	ret |= (1 << UIInterfaceOrientationPortraitUpsideDown);
 	if(UnityIsOrientationEnabled(landscapeLeft))		ret |= (1 << UIInterfaceOrientationLandscapeRight);
 	if(UnityIsOrientationEnabled(landscapeRight))		ret |= (1 << UIInterfaceOrientationLandscapeLeft);
+
 	return ret;
 }
 @end
@@ -156,12 +162,10 @@ static void ViewWillTransitionToSize_DefaultImpl(id self_, SEL _cmd, CGSize size
 }
 @end
 
-
 extern "C" void UnityNotifyAutoOrientationChange()
 {
 	[UIViewController attemptRotationToDeviceOrientation];
 }
-
 
 // ios8 changed the way ViewController should handle rotation, so pick correct implementation at runtime
 //
@@ -191,7 +195,6 @@ static void DidRotateFromInterfaceOrientation_DefaultImpl(id self_, SEL _cmd, UI
 }
 static void ViewWillTransitionToSize_DefaultImpl(id self_, SEL _cmd, CGSize size, id<UIViewControllerTransitionCoordinator> coordinator)
 {
-#if UNITY_IOS8_ORNEWER_SDK
 	UIViewController* self = (UIViewController*)self_;
 
 	ScreenOrientation curOrient = ConvertToUnityScreenOrientation(self.interfaceOrientation);
@@ -209,27 +212,20 @@ static void ViewWillTransitionToSize_DefaultImpl(id self_, SEL _cmd, CGSize size
 
 	[GetAppController() interfaceWillChangeOrientationTo:ConvertToIosScreenOrientation(newOrient)];
 
-	[coordinator
-		animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
-		{
-		}
-		completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
-		{
-			[self.view layoutSubviews];
-			[GetAppController() interfaceDidChangeOrientationFrom:ConvertToIosScreenOrientation(curOrient)];
+	[coordinator animateAlongsideTransition:nil completion:^(id<UIViewControllerTransitionCoordinatorContext> context){
+		[self.view layoutSubviews];
+		[GetAppController() interfaceDidChangeOrientationFrom:ConvertToIosScreenOrientation(curOrient)];
 
-			[KeyboardDelegate FinishReorientation];
-			[UIView setAnimationsEnabled:YES];
-		}
-	];
-#endif
+		[KeyboardDelegate FinishReorientation];
+		[UIView setAnimationsEnabled:YES];
+	}];
 	UNITY_OBJC_FORWARD_TO_SUPER(self_, [UIViewController class], @selector(viewWillTransitionToSize:withTransitionCoordinator:), ViewWillTransitionToSizeSendFunc, size, coordinator);
 }
 
 
 extern "C" void AddViewControllerRotationHandling(Class class_, IMP willRotateToInterfaceOrientation, IMP didRotateFromInterfaceOrientation, IMP viewWillTransitionToSize)
 {
-	if(UNITY_IOS8_ORNEWER_SDK && _ios80orNewer && viewWillTransitionToSize)
+	if(_ios80orNewer && viewWillTransitionToSize)
 	{
 		ObjCSetKnownInstanceMethod(class_, @selector(viewWillTransitionToSize:withTransitionCoordinator:), viewWillTransitionToSize);
 	}
@@ -248,3 +244,5 @@ extern "C" void AddViewControllerDefaultRotationHandling(Class class_)
 		(IMP)&ViewWillTransitionToSize_DefaultImpl
 	);
 }
+
+#endif // UNITY_IOS

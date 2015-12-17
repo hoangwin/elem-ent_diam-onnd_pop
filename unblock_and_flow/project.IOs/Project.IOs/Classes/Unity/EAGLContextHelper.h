@@ -1,5 +1,7 @@
 #pragma once
 
+struct UnityDisplaySurfaceBase;
+
 #ifdef __OBJC__
 	@class EAGLContext;
 #else
@@ -16,15 +18,16 @@ extern "C" EAGLContext*	UnityGetCurrentContextEAGL();
 
 #if __OBJC__
 
-	class
-	EAGLContextSetCurrentAutoRestore
-	{
-	public:
-		EAGLContext* old;
-		EAGLContext* cur;
+class
+EAGLContextSetCurrentAutoRestore
+{
+public:
+	EAGLContext* old;
+	EAGLContext* cur;
 
-		EAGLContextSetCurrentAutoRestore(EAGLContext* cur);
-		~EAGLContextSetCurrentAutoRestore();
-	};
+	EAGLContextSetCurrentAutoRestore(EAGLContext* cur);
+	EAGLContextSetCurrentAutoRestore(UnityDisplaySurfaceBase* surface);
+	~EAGLContextSetCurrentAutoRestore();
+};
 
 #endif // __OBJC__

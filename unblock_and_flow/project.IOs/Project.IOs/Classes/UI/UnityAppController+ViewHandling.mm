@@ -18,6 +18,7 @@ extern bool _unityAppReady;
 
 @implementation UnityAppController (ViewHandling)
 
+#if !UNITY_TVOS
 // special case for when we DO know the app orientation, but dont get it through normal mechanism (UIViewController orientation handling)
 // how can this happen:
 // 1. On startup: ios is not sending "change orientation" notifications on startup (but rather we "start" in correct one already)
@@ -29,16 +30,24 @@ extern bool _unityAppReady;
 	[_unityView willRotateToOrientation:orientation fromOrientation:(UIInterfaceOrientation)UIInterfaceOrientationUnknown];
 	[_unityView didRotate];
 }
+#endif
 
 - (UnityView*)createUnityView
 {
 	return [[UnityView alloc] initFromMainScreen];
 }
-- (UIViewController*)createAutorotatingUnityViewController
+#if UNITY_TVOS
+- (UnityViewControllerBase*)createUnityViewControllerForTVOS
+{
+	return [[UnityDefaultTVViewController alloc] init];
+}
+#else
+- (UnityViewControllerBase*)createAutorotatingUnityViewController
 {
 	return [[UnityDefaultViewController alloc] init];
 }
-- (UIViewController*)createUnityViewControllerForOrientation:(UIInterfaceOrientation)orient
+
+- (UnityViewControllerBase*)createUnityViewControllerForOrientation:(UIInterfaceOrientation)orient
 {
 	switch(orient)
 	{
@@ -51,7 +60,7 @@ extern bool _unityAppReady;
 	}
 	return nil;
 }
-- (UIViewController*)createRootViewControllerForOrientation:(UIInterfaceOrientation)orientation
+- (UnityViewControllerBase*)createRootViewControllerForOrientation:(UIInterfaceOrientation)orientation
 {
 	NSAssert(orientation != 0, @"Bad UIInterfaceOrientation provided");
 	if(_viewControllerForOrientation[orientation] == nil)
@@ -59,9 +68,14 @@ extern bool _unityAppReady;
 	return _viewControllerForOrientation[orientation];
 
 }
+#endif
+
 - (UIViewController*)createRootViewController
 {
-	UIViewController* ret = nil;
+#if UNITY_TVOS
+	return [self createUnityViewControllerForTVOS];
+#else
+	UnityViewControllerBase* ret = nil;
 	if(UnityShouldAutorotate())
 	{
 		if(_viewControllerForOrientation[0] == nil)
@@ -75,9 +89,10 @@ extern bool _unityAppReady;
 	}
 
 	if(_curOrientation == UIInterfaceOrientationUnknown)
-		[self updateAppOrientation:ret.interfaceOrientation];
+		[self updateAppOrientation:ConvertToIosScreenOrientation(UIViewControllerOrientation(ret))];
 
 	return ret;
+#endif
 }
 
 - (void)willStartWithViewController:(UIViewController*)controller
@@ -86,7 +101,9 @@ extern bool _unityAppReady;
 	_unityView.autoresizingMask		= UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
 	_rootController.view = _rootView = _unityView;
+#if !UNITY_TVOS
 	_rootController.wantsFullScreenLayout = TRUE;
+#endif
 }
 - (void)willTransitionToViewController:(UIViewController*)toController fromViewController:(UIViewController*)fromController
 {
@@ -94,6 +111,7 @@ extern bool _unityAppReady;
 	toController.view	= _rootView;
 }
 
+#if !UNITY_TVOS
 -(void)interfaceWillChangeOrientationTo:(UIInterfaceOrientation)toInterfaceOrientation
 {
 	UIInterfaceOrientation fromInterfaceOrientation = _curOrientation;
@@ -105,12 +123,14 @@ extern bool _unityAppReady;
 {
 	[_unityView didRotate];
 }
+#endif
 
 - (UIView*)createSnapshotView
 {
-	if([_rootView respondsToSelector:@selector(snapshotViewAfterScreenUpdates:)])
-		return [_rootView snapshotViewAfterScreenUpdates:YES];
-	return nil;
+	// snapshot api appeared on ios7
+	// BUT on ios7 tweaking hierarchy like that on going to background results in all kind of weird things when going back to foreground
+	// so do snapshotting only on ios8 and newer
+	return _ios80orNewer ? [_rootView snapshotViewAfterScreenUpdates:YES] : nil;
 }
 
 - (void)createUI
@@ -182,6 +202,7 @@ extern bool _unityAppReady;
 	[_rootView layoutSubviews];
 }
 
+#if !UNITY_TVOS
 - (void)orientInterface:(UIInterfaceOrientation)orient
 {
 	if(_curOrientation == orient && _rootController != _viewControllerForOrientation[0])
@@ -209,11 +230,13 @@ extern bool _unityAppReady;
 }
 
 // it is kept only for backward compatibility
-- (void)orientUnity:(ScreenOrientation)orient
+- (void)orientUnity:(UIInterfaceOrientation)orient
 {
-	[self orientInterface:ConvertToIosScreenOrientation(orient)];
+	[self orientInterface:orient];
 }
+#endif
 
+#if UNITY_IOS
 - (void)checkOrientationRequest
 {
 	if(UnityShouldAutorotate())
@@ -223,12 +246,18 @@ extern bool _unityAppReady;
 			[self transitionToViewController:[self createRootViewController]];
 			[UIViewController attemptRotationToDeviceOrientation];
 		}
+        return;
 	}
 	else
 	{
 		ScreenOrientation requestedOrient = (ScreenOrientation)UnityRequestedScreenOrientation();
-		[self orientUnity:requestedOrient];
+		[self orientUnity:ConvertToIosScreenOrientation(requestedOrient)];
 	}
 }
+#else
+- (void)checkOrientationRequest
+{
+}
+#endif
 
 @end

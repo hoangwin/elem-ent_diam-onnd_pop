@@ -1,6 +1,8 @@
 #import "iPhone_Sensors.h"
+#if !UNITY_TVOS
 #import <CoreLocation/CoreLocation.h>
 #import <CoreMotion/CoreMotion.h>
+#endif
 #import <GameController/GameController.h>
 
 #include "OrientationSupport.h"
@@ -8,6 +10,8 @@
 
 typedef void (^ControllerPausedHandler)(GCController *controller);
 static NSArray* QueryControllerCollection();
+
+static bool gTVRemoteTouchesEnabled = true;
 
 static bool gCompensateSensors = true;
 bool gEnableGyroscope = false;
@@ -144,8 +148,13 @@ inline Quaternion4f UnityReorientQuaternion(float x, float y, float z, float w)
 }
 
 
+#if UNITY_TVOS
+static bool sGCMotionForwardingEnabled = false;
+static bool sGCMotionForwardedForCurrentFrame = false;
+#else
 static CMMotionManager*		sMotionManager	= nil;
 static NSOperationQueue*	sMotionQueue	= nil;
+#endif
 
 // Current update interval or 0.0f if not initialized. This is returned
 // to the user as current update interval and this value is set to 0.0f when
@@ -161,6 +170,7 @@ static float sUserUpdateInterval = 1.0f / 30.0f;
 
 void SensorsCleanup()
 {
+#if !UNITY_TVOS
 	if (sMotionManager != nil)
 	{
 		[sMotionManager stopGyroUpdates];
@@ -170,10 +180,14 @@ void SensorsCleanup()
 	}
 
 	sMotionQueue = nil;
+#endif
 }
 
 extern "C" void UnityCoreMotionStart()
 {
+#if UNITY_TVOS
+	sGCMotionForwardingEnabled = true;
+#else
 	if(sMotionQueue == nil)
 		sMotionQueue = [[NSOperationQueue alloc] init];
 
@@ -205,20 +219,26 @@ extern "C" void UnityCoreMotionStart()
 			[sMotionManager setAccelerometerUpdateInterval:1.0f/frequency];
 		}
 	}
+#endif
 }
 
 extern "C" void UnityCoreMotionStop()
 {
+#if UNITY_TVOS
+	sGCMotionForwardingEnabled = false;
+#else
 	if(sMotionManager != nil)
 	{
 		[sMotionManager stopGyroUpdates];
 		[sMotionManager stopDeviceMotionUpdates];
 	}
+#endif
 }
 
 
 extern "C" void UnitySetGyroUpdateInterval(int idx, float interval)
 {
+#if !UNITY_TVOS
 	static const float _MinUpdateInterval = 1.0f/60.0f;
 	static const float _MaxUpdateInterval = 1.0f;
 
@@ -234,6 +254,7 @@ extern "C" void UnitySetGyroUpdateInterval(int idx, float interval)
 		[sMotionManager setGyroUpdateInterval:interval];
 		[sMotionManager setDeviceMotionUpdateInterval:interval];
 	}
+#endif
 }
 
 extern "C" float UnityGetGyroUpdateInterval(int idx)
@@ -243,6 +264,7 @@ extern "C" float UnityGetGyroUpdateInterval(int idx)
 
 extern "C" void UnityUpdateGyroData()
 {
+#if !UNITY_TVOS
 	CMRotationRate rotationRate = { 0.0, 0.0, 0.0 };
 	CMRotationRate rotationRateUnbiased = { 0.0, 0.0, 0.0 };
 	CMAcceleration userAcceleration = { 0.0, 0.0, 0.0 };
@@ -284,20 +306,29 @@ extern "C" void UnityUpdateGyroData()
 
 	Quaternion4f reorientedAtt = UnityReorientQuaternion(attitude.x, attitude.y, attitude.z, attitude.w);
 	UnitySensorsSetAttitude(0, reorientedAtt.x, reorientedAtt.y, reorientedAtt.z, reorientedAtt.w);
+#endif
 }
 
 extern "C" int UnityIsGyroEnabled(int idx)
 {
+#if UNITY_TVOS
+	return sGCMotionForwardingEnabled;
+#else
 	if (sMotionManager == nil)
 		return 0;
 
 	return sMotionManager.gyroAvailable && sMotionManager.gyroActive;
+#endif
 }
 
 extern "C" int UnityIsGyroAvailable()
 {
+#if UNITY_TVOS
+	return true;
+#else
 	if (sMotionManager != nil)
 		return sMotionManager.gyroAvailable;
+#endif
 
 	return 0;
 }
@@ -319,7 +350,8 @@ enum JoystickButtonNumbers
 	BTN_L1 = 8,
 	BTN_L2 = 10,
 	BTN_R1 = 9,
-	BTN_R2 = 11
+	BTN_R2 = 11,
+	BTN_MENU = 16
 };
 
 
@@ -371,84 +403,138 @@ static void SetJoystickButtonState (int joyNum, int buttonNum, int state)
 	UnitySetKeyState (UnityStringToKey (buf), state);
 }
 
+static void ReportJoystickButton(int idx, JoystickButtonNumbers num, GCControllerButtonInput* button)
+{
+	SetJoystickButtonState(idx + 1, num, GetButtonPressed(button));
+	UnitySetJoystickPosition(idx + 1, num, GetButtonValue(button));
+}
+
+template<class ClassXYZ>
+static void ReportJoystickXYZAxes(int idx, int xaxis, int yaxis, int zaxis, const ClassXYZ& xyz)
+{
+	UnitySetJoystickPosition(idx + 1, xaxis, xyz.x);
+	UnitySetJoystickPosition(idx + 1, yaxis, xyz.y);
+	UnitySetJoystickPosition(idx + 1, zaxis, xyz.z);
+}
+
+template<class ClassXYZW>
+static void ReportJoystickXYZWAxes(int idx, int xaxis, int yaxis, int zaxis, int waxis,
+								   const ClassXYZW& xyzw)
+{
+	UnitySetJoystickPosition(idx + 1, xaxis, xyzw.x);
+	UnitySetJoystickPosition(idx + 1, yaxis, xyzw.y);
+	UnitySetJoystickPosition(idx + 1, zaxis, xyzw.z);
+	UnitySetJoystickPosition(idx + 1, waxis, xyzw.w);
+}
+
+#if UNITY_TVOS
+static void ReportJoystickMicro(int idx, GCMicroGamepad* gamepad)
+{
+	GCControllerDirectionPad* dpad = [gamepad dpad];
+
+	UnitySetJoystickPosition(idx + 1, 0, GetAxisValue([dpad xAxis]));
+	UnitySetJoystickPosition(idx + 1, 1, -GetAxisValue([dpad yAxis]));
+
+	ReportJoystickButton(idx, BTN_DPAD_UP, [dpad up]);
+	ReportJoystickButton(idx, BTN_DPAD_RIGHT, [dpad right]);
+	ReportJoystickButton(idx, BTN_DPAD_DOWN, [dpad down]);
+	ReportJoystickButton(idx, BTN_DPAD_LEFT, [dpad left]);
+
+	ReportJoystickButton(idx, BTN_A, [gamepad buttonA]);
+	ReportJoystickButton(idx, BTN_X, [gamepad buttonX]);
+}
+#endif
+
+static void ReportJoystickBasic(int idx, GCGamepad* gamepad)
+{
+	GCControllerDirectionPad* dpad = [gamepad dpad];
+
+	UnitySetJoystickPosition(idx + 1, 0, GetAxisValue([dpad xAxis]));
+	UnitySetJoystickPosition(idx + 1, 1, -GetAxisValue([dpad yAxis]));
+	ReportJoystickButton(idx, BTN_DPAD_UP, [dpad up]);
+	ReportJoystickButton(idx, BTN_DPAD_RIGHT, [dpad right]);
+	ReportJoystickButton(idx, BTN_DPAD_DOWN, [dpad down]);
+	ReportJoystickButton(idx, BTN_DPAD_LEFT, [dpad left]);
+
+	ReportJoystickButton(idx, BTN_A, [gamepad buttonA]);
+	ReportJoystickButton(idx, BTN_B, [gamepad buttonB]);
+	ReportJoystickButton(idx, BTN_Y, [gamepad buttonY]);
+	ReportJoystickButton(idx, BTN_X, [gamepad buttonX]);
+
+	ReportJoystickButton(idx, BTN_L1, [gamepad leftShoulder]);
+	ReportJoystickButton(idx, BTN_R1, [gamepad rightShoulder]);
+}
+
+static void ReportJoystickExtended(int idx, GCExtendedGamepad* gamepad)
+{
+	GCControllerDirectionPad* dpad = [gamepad dpad];
+	GCControllerDirectionPad* leftStick = [gamepad leftThumbstick];
+	GCControllerDirectionPad* rightStick = [gamepad rightThumbstick];
+
+	UnitySetJoystickPosition(idx + 1, 0, GetAxisValue([leftStick xAxis]));
+	UnitySetJoystickPosition(idx + 1, 1, -GetAxisValue([leftStick yAxis]));
+
+	UnitySetJoystickPosition(idx + 1, 2, GetAxisValue([rightStick xAxis]));
+	UnitySetJoystickPosition(idx + 1, 3, -GetAxisValue([rightStick yAxis]));
+	ReportJoystickButton(idx, BTN_DPAD_UP, [dpad up]);
+	ReportJoystickButton(idx, BTN_DPAD_RIGHT, [dpad right]);
+	ReportJoystickButton(idx, BTN_DPAD_DOWN, [dpad down]);
+	ReportJoystickButton(idx, BTN_DPAD_LEFT, [dpad left]);
+
+	ReportJoystickButton(idx, BTN_A, [gamepad buttonA]);
+	ReportJoystickButton(idx, BTN_B, [gamepad buttonB]);
+	ReportJoystickButton(idx, BTN_Y, [gamepad buttonY]);
+	ReportJoystickButton(idx, BTN_X, [gamepad buttonX]);
+
+	ReportJoystickButton(idx, BTN_L1, [gamepad leftShoulder]);
+	ReportJoystickButton(idx, BTN_R1, [gamepad rightShoulder]);
+	ReportJoystickButton(idx, BTN_L2, [gamepad leftTrigger]);
+	ReportJoystickButton(idx, BTN_R2, [gamepad rightTrigger]);
+}
+
+#if UNITY_IOS8_ORNEWER_SDK || UNITY_TVOS
+static void ReportJoystickMotion(int idx, GCMotion* motion)
+{
+	ReportJoystickXYZAxes(idx, 16, 17, 18, motion.gravity);
+	ReportJoystickXYZAxes(idx, 19, 20, 21, motion.userAcceleration);
+	ReportJoystickXYZAxes(idx, 22, 23, 24, motion.rotationRate);
+	ReportJoystickXYZWAxes(idx, 25, 26, 27, 28, motion.attitude);
+
+#if UNITY_TVOS
+	if (sGCMotionForwardingEnabled && !sGCMotionForwardedForCurrentFrame)
+	{
+		UnitySensorsSetGravity(0, motion.gravity.x, motion.gravity.y, motion.gravity.z);
+		UnitySensorsSetUserAcceleration(0, motion.userAcceleration.x, motion.userAcceleration.y, motion.userAcceleration.z);
+		UnitySensorsSetAttitude(0, motion.attitude.x, motion.attitude.y, motion.attitude.z, motion.attitude.w);
+		UnitySensorsSetGyroRotationRate(0, motion.rotationRate.x, motion.rotationRate.y, motion.rotationRate.z);
+		sGCMotionForwardedForCurrentFrame = true;
+	}
+#endif
+}
+#endif
+
 static void ReportJoystick(GCController* controller, int idx)
 {
 	if (controller.controllerPausedHandler == nil)
 		controller.controllerPausedHandler = gControllerHandler;
 
-	// For basic profile map hatch to Vertical + Horizontal axes
-	if ([controller extendedGamepad] == nil)
-	{
-		GCGamepad* gamepad = [controller gamepad];
-		GCControllerDirectionPad* dpad = [gamepad dpad];
-
-		UnitySetJoystickPosition(idx + 1, 0, GetAxisValue([dpad xAxis]));
-		UnitySetJoystickPosition(idx + 1, 1, -GetAxisValue([dpad yAxis]));
-
-		SetJoystickButtonState(idx + 1, BTN_DPAD_UP, GetButtonPressed([dpad up]));
-		UnitySetJoystickPosition(idx + 1, BTN_DPAD_UP, GetButtonValue([dpad up]));
-		SetJoystickButtonState(idx + 1, BTN_DPAD_RIGHT, GetButtonPressed([dpad right]));
-		UnitySetJoystickPosition(idx + 1, BTN_DPAD_RIGHT, GetButtonValue([dpad right]));
-		SetJoystickButtonState(idx + 1, BTN_DPAD_DOWN, GetButtonPressed([dpad down]));
-		UnitySetJoystickPosition(idx + 1, BTN_DPAD_DOWN, GetButtonValue([dpad down]));
-		SetJoystickButtonState(idx + 1, BTN_DPAD_LEFT, GetButtonPressed([dpad left]));
-		UnitySetJoystickPosition(idx + 1, BTN_DPAD_LEFT, GetButtonValue([dpad left]));
-
-		SetJoystickButtonState(idx + 1, BTN_A, GetButtonPressed([gamepad buttonA]));
-		UnitySetJoystickPosition(idx + 1, BTN_A, GetButtonValue([gamepad buttonA]));
-		SetJoystickButtonState(idx + 1, BTN_B, GetButtonPressed([gamepad buttonB]));
-		UnitySetJoystickPosition(idx + 1, BTN_B, GetButtonValue([gamepad buttonB]));
-		SetJoystickButtonState(idx + 1, BTN_Y, GetButtonPressed([gamepad buttonY]));
-		UnitySetJoystickPosition(idx + 1, BTN_Y, GetButtonValue([gamepad buttonY]));
-		SetJoystickButtonState(idx + 1, BTN_X, GetButtonPressed([gamepad buttonX]));
-		UnitySetJoystickPosition(idx + 1, BTN_X, GetButtonValue([gamepad buttonX]));
-
-		SetJoystickButtonState(idx + 1, BTN_L1, GetButtonPressed([gamepad leftShoulder]));
-		UnitySetJoystickPosition(idx + 1, BTN_L1, GetButtonValue([gamepad leftShoulder]));
-		SetJoystickButtonState(idx + 1, BTN_R1, GetButtonPressed([gamepad rightShoulder]));
-		UnitySetJoystickPosition(idx + 1, BTN_R1, GetButtonValue([gamepad rightShoulder]));
-	}
+	if ([controller extendedGamepad] != nil)
+		ReportJoystickExtended(idx, [controller extendedGamepad]);
+	else if ([controller gamepad] != nil)
+		ReportJoystickBasic(idx, [controller gamepad]);
+#if UNITY_TVOS
+	else if ([controller microGamepad] != nil)
+		ReportJoystickMicro(idx, [controller microGamepad]);
+#endif
 	else
 	{
-		GCExtendedGamepad* extendedPad = [controller extendedGamepad];
-		GCControllerDirectionPad* dpad = [extendedPad dpad];
-		GCControllerDirectionPad* leftStick = [extendedPad leftThumbstick];
-		GCControllerDirectionPad* rightStick = [extendedPad rightThumbstick];
-
-		UnitySetJoystickPosition(idx + 1, 0, GetAxisValue([leftStick xAxis]));
-		UnitySetJoystickPosition(idx + 1, 1, -GetAxisValue([leftStick yAxis]));
-
-		UnitySetJoystickPosition(idx + 1, 2, GetAxisValue([rightStick xAxis]));
-		UnitySetJoystickPosition(idx + 1, 3, -GetAxisValue([rightStick yAxis]));
-
-
-		SetJoystickButtonState(idx + 1, BTN_DPAD_UP, GetButtonPressed([dpad up]));
-		UnitySetJoystickPosition(idx + 1, BTN_DPAD_UP, GetButtonValue([dpad up]));
-		SetJoystickButtonState(idx + 1, BTN_DPAD_RIGHT, GetButtonPressed([dpad right]));
-		UnitySetJoystickPosition(idx + 1, BTN_DPAD_RIGHT, GetButtonValue([dpad right]));
-		SetJoystickButtonState(idx + 1, BTN_DPAD_DOWN, GetButtonPressed([dpad down]));
-		UnitySetJoystickPosition(idx + 1, BTN_DPAD_DOWN, GetButtonValue([dpad down]));
-		SetJoystickButtonState(idx + 1, BTN_DPAD_LEFT, GetButtonPressed([dpad left]));
-		UnitySetJoystickPosition(idx + 1, BTN_DPAD_LEFT, GetButtonValue([dpad left]));
-
-		SetJoystickButtonState(idx + 1, BTN_A, GetButtonPressed([extendedPad buttonA]));
-		UnitySetJoystickPosition(idx + 1, BTN_A, GetButtonValue([extendedPad buttonA]));
-		SetJoystickButtonState(idx + 1, BTN_B, GetButtonPressed([extendedPad buttonB]));
-		UnitySetJoystickPosition(idx + 1, BTN_B, GetButtonValue([extendedPad buttonB]));
-		SetJoystickButtonState(idx + 1, BTN_Y, GetButtonPressed([extendedPad buttonY]));
-		UnitySetJoystickPosition(idx + 1, BTN_Y, GetButtonValue([extendedPad buttonY]));
-		SetJoystickButtonState(idx + 1, BTN_X, GetButtonPressed([extendedPad buttonX]));
-		UnitySetJoystickPosition(idx + 1, BTN_X, GetButtonValue([extendedPad buttonX]));
-
-		SetJoystickButtonState(idx + 1, BTN_L1, GetButtonPressed([extendedPad leftShoulder]));
-		UnitySetJoystickPosition(idx + 1, BTN_L1, GetButtonValue([extendedPad leftShoulder]));
-		SetJoystickButtonState(idx + 1, BTN_R1, GetButtonPressed([extendedPad rightShoulder]));
-		UnitySetJoystickPosition(idx + 1, BTN_R1, GetButtonValue([extendedPad rightShoulder]));
-		SetJoystickButtonState(idx + 1, BTN_L2, GetButtonPressed([extendedPad leftTrigger]));
-		UnitySetJoystickPosition(idx + 1, BTN_L2, GetButtonValue([extendedPad leftTrigger]));
-		SetJoystickButtonState(idx + 1, BTN_R2, GetButtonPressed([extendedPad rightTrigger]));
-		UnitySetJoystickPosition(idx + 1, BTN_R2, GetButtonValue([extendedPad rightTrigger]));
+		// TODO: do something with not supported gamepad profiles
 	}
+
+#if UNITY_IOS8_ORNEWER_SDK || UNITY_TVOS
+	if (controller.motion != nil)
+		ReportJoystickMotion(idx, controller.motion);
+#endif
 
 	// Map pause button
 	SetJoystickButtonState(idx + 1, BTN_PAUSE, gPausedJoysticks[idx]);
@@ -460,6 +546,10 @@ static void ReportJoystick(GCController* controller, int idx)
 extern "C" void UnityUpdateJoystickData()
 {
 	NSArray* list = QueryControllerCollection();
+#if UNITY_TVOS
+	sGCMotionForwardedForCurrentFrame = false;
+#endif
+
 	if (list != nil)
 	{
 		for (int i = 0; i < [list count]; i++)
@@ -515,9 +605,10 @@ extern "C" void UnityGetNiceKeyname(int key, char* buffer, int maxLen)
 #pragma clang diagnostic pop
 
 
-
+#if !UNITY_TVOS
 @interface LocationServiceDelegate : NSObject <CLLocationManagerDelegate>
 @end
+#endif
 
 void
 UnitySetLastLocation(double timestamp,
@@ -536,8 +627,10 @@ UnitySetLastHeading(float magneticHeading,
 struct LocationServiceInfo
 {
 private:
+#if !UNITY_TVOS
 	LocationServiceDelegate* delegate;
 	CLLocationManager* locationManager;
+#endif
 public:
 	LocationServiceStatus locationStatus;
 	LocationServiceStatus headingStatus;
@@ -546,13 +639,19 @@ public:
 	float distanceFilter;
 
 	LocationServiceInfo();
+#if !UNITY_TVOS
 	CLLocationManager* GetLocationManager();
+#endif
 };
 
 LocationServiceInfo::LocationServiceInfo()
 {
 	locationStatus = kLocationServiceStopped;
+#if !UNITY_TVOS
 	desiredAccuracy = kCLLocationAccuracyKilometer;
+#else
+	desiredAccuracy = 0;
+#endif
 	distanceFilter = 500;
 
 	headingStatus = kLocationServiceStopped;
@@ -560,6 +659,7 @@ LocationServiceInfo::LocationServiceInfo()
 
 static LocationServiceInfo gLocationServiceStatus;
 
+#if !UNITY_TVOS
 CLLocationManager*
 LocationServiceInfo::GetLocationManager()
 {
@@ -573,11 +673,15 @@ LocationServiceInfo::GetLocationManager()
 
 	return locationManager;
 }
-
+#endif
 
 bool LocationService::IsServiceEnabledByUser()
 {
+#if !UNITY_TVOS
 	return [CLLocationManager locationServicesEnabled];
+#else
+	return false;
+#endif
 }
 
 
@@ -603,6 +707,7 @@ float LocationService::GetDistanceFilter()
 
 void LocationService::StartUpdatingLocation()
 {
+#if !UNITY_TVOS
 	if (gLocationServiceStatus.locationStatus != kLocationServiceRunning)
 	{
 		CLLocationManager* locationManager = gLocationServiceStatus.GetLocationManager();
@@ -618,19 +723,23 @@ void LocationService::StartUpdatingLocation()
 
 		gLocationServiceStatus.locationStatus = kLocationServiceInitializing;
 	}
+#endif
 }
 
 void LocationService::StopUpdatingLocation()
 {
+#if !UNITY_TVOS
 	if (gLocationServiceStatus.locationStatus == kLocationServiceRunning)
 	{
 		[gLocationServiceStatus.GetLocationManager() stopUpdatingLocation];
 		gLocationServiceStatus.locationStatus = kLocationServiceStopped;
 	}
+#endif
 }
 
 void LocationService::SetHeadingUpdatesEnabled(bool enabled)
 {
+#if !UNITY_TVOS
 	if (enabled)
 	{
 		if (gLocationServiceStatus.headingStatus != kLocationServiceRunning &&
@@ -650,7 +759,7 @@ void LocationService::SetHeadingUpdatesEnabled(bool enabled)
 			gLocationServiceStatus.headingStatus = kLocationServiceStopped;
 		}
 	}
-
+#endif
 }
 
 bool LocationService::IsHeadingUpdatesEnabled()
@@ -670,9 +779,14 @@ int UnityGetHeadingStatus()
 
 bool LocationService::IsHeadingAvailable()
 {
+#if !UNITY_TVOS
 	return [CLLocationManager headingAvailable];
+#else
+	return false;
+#endif
 }
 
+#if !UNITY_TVOS
 @implementation LocationServiceDelegate
 
 - (void)locationManager:(CLLocationManager*)manager didUpdateLocations:(NSArray*)locations
@@ -711,3 +825,90 @@ bool LocationService::IsHeadingAvailable()
 }
 
 @end
+#endif
+
+#if UNITY_TVOS
+GCMicroGamepad* QueryMicroController()
+{
+	NSArray* list = QueryControllerCollection();
+	for (GCController* controller in list)
+	{
+		if (controller.microGamepad != nil)
+			return controller.microGamepad;
+	}
+
+	return nil;
+}
+#endif
+
+extern "C" int UnityGetAppleTVRemoteTouchesEnabled()
+{
+	return gTVRemoteTouchesEnabled;
+}
+
+extern "C" void UnitySetAppleTVRemoteTouchesEnabled(int val)
+{
+	gTVRemoteTouchesEnabled = val;	
+}
+
+extern "C" int UnityGetAppleTVRemoteAllowExitToMenu()
+{
+#if UNITY_TVOS
+	return ((GCEventViewController*)UnityGetGLViewController()).controllerUserInteractionEnabled;
+#else
+	return false;
+#endif
+}
+extern "C" void UnitySetAppleTVRemoteAllowExitToMenu(int val)
+{
+#if UNITY_TVOS
+	((GCEventViewController*)UnityGetGLViewController()).controllerUserInteractionEnabled = val;
+#endif
+}
+
+extern "C" int UnityGetAppleTVRemoteAllowRotation()
+{
+#if UNITY_TVOS
+	GCMicroGamepad* controller = QueryMicroController();
+	if (controller != nil)
+		return controller.allowsRotation;
+	else
+		return false;
+#else
+	return false;
+#endif
+}
+
+extern "C" void		UnitySetAppleTVRemoteAllowRotation(int val)
+{
+#if UNITY_TVOS
+	GCMicroGamepad* controller = QueryMicroController();
+	if (controller != nil)
+		controller.allowsRotation = val;
+#endif
+}
+
+extern "C" int		UnityGetAppleTVRemoteReportAbsoluteDpadValues()
+{
+#if UNITY_TVOS
+	GCMicroGamepad* controller = QueryMicroController();
+	if (controller != nil)
+		return controller.reportsAbsoluteDpadValues;
+	else
+		return false;
+#else
+	return false;
+#endif
+}
+
+extern "C" void		UnitySetAppleTVRemoteReportAbsoluteDpadValues(int val)
+{
+#if UNITY_TVOS
+	NSArray* list = QueryControllerCollection();
+	for (GCController* controller in list)
+	{
+		if (controller.microGamepad != nil)
+			controller.microGamepad.reportsAbsoluteDpadValues = val;
+	}
+#endif
+}
