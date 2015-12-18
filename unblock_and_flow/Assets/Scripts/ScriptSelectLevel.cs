@@ -6,8 +6,8 @@ public class ScriptSelectLevel : MonoBehaviour {
 
 	public GameObject ButtonTempleted;
 
-    
 
+    public UnityEngine.SpriteRenderer BGroundSpriteRenderer;
     public static int MAX_PAGE = 5;
     public static int mcurrentPage = 0;
 	public Text TextPage;
@@ -49,6 +49,7 @@ public class ScriptSelectLevel : MonoBehaviour {
 		vline5 = new Vector3(line5.transform.position.x,line5.transform.position.y,line5.transform.position.z);
 		Init ();
 		instance = this;
+        DEF_.FillFullImage(BGroundSpriteRenderer);
 	}
 	public void Init()
 	{	

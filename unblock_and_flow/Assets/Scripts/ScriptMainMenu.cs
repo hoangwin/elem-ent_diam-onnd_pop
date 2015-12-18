@@ -9,7 +9,7 @@ public class ScriptMainMenu : MonoBehaviour
     public GameObject line2;
     public GameObject line3;
     public GameObject line4;
-
+    public UnityEngine.SpriteRenderer BGroundSpriteRenderer;
     public static ScriptMainMenu instance;
 
     public static ScriptMainMenu Instance
@@ -32,7 +32,8 @@ public class ScriptMainMenu : MonoBehaviour
 		DEF_.initAndLoadScore ();
         effectBegin();
         instance = this;
-        ShowADS();
+        DEF_.FillFullImage(BGroundSpriteRenderer);
+      //  ShowADS();
         
     }
 

@@ -4,7 +4,7 @@
     <key>CFBundleDevelopmentRegion</key>
     <string>en</string>
     <key>CFBundleDisplayName</key>
-    <string>Unblock Tiles</string>
+    <string>Unblock And Flow</string>
     <key>CFBundleExecutable</key>
     <string>${EXECUTABLE_NAME}</string>
     <key>CFBundleIconFiles</key>
@@ -40,10 +40,6 @@
     <string></string>
     <key>UIApplicationExitsOnSuspend</key>
     <false />
-    <key>UILaunchStoryboardName~ipad</key>
-    <string>LaunchScreen-iPad</string>
-    <key>UILaunchStoryboardName~iphone</key>
-    <string>LaunchScreen-iPhone</string>
     <key>UIPrerenderedIcon</key>
     <false />
     <key>UIRequiredDeviceCapabilities</key>

@@ -25,6 +25,11 @@ public class DEF_ : MonoBehaviour
 			DEF_.ScoreModeClassic.Load();
 			DEF_.ScoreModeExtra = new SuperInt(0,"SCORE_MODE_EXTRA");
 			DEF_.ScoreModeExtra.Load();
+            //test
+          //  DEF_.ScoreModeClassic.NUM = 0;
+          //  DEF_.ScoreModeClassic.Save();
+         //   DEF_.ScoreModeExtra.NUM = 0;
+          //  DEF_.ScoreModeExtra.Save();
 		}
 	}
     public static void FillFullImage(SpriteRenderer sr)
